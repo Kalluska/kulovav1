@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kulova — Aloita käyttö</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --black: #0a0a08;
+  --white: #f5f3ee;
+  --accent: #c8f25a;
+  --gray-1: #1a1a17;
+  --gray-2: #2a2a26;
+  --gray-3: #3d3d38;
+  --gray-4: #6b6b63;
+  --gray-5: #9a9a90;
+}
+body { background: var(--black); color: var(--white); font-family: 'DM Sans', sans-serif; min-height: 100vh; }
+
+nav {
+  padding: 1.25rem 2.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--gray-2);
+}
+.logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.25rem; color: var(--white); text-decoration: none; }
+.logo span { color: var(--accent); }
+
+.container {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 4rem 2rem 6rem;
+}
+
+.step { display: none; }
+.step.active { display: block; }
+
+.step-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gray-4);
+  margin-bottom: 0.75rem;
+}
+
+h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.75rem;
+  line-height: 1.15;
+}
+
+.subtitle {
+  color: var(--gray-5);
+  font-size: 1rem;
+  margin-bottom: 2.5rem;
+  line-height: 1.6;
+  font-weight: 300;
+}
+
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: var(--white);
+}
+
+.label-hint {
+  font-weight: 300;
+  color: var(--gray-5);
+  font-size: 0.8rem;
+  margin-left: 0.5rem;
+}
+
+input, textarea, select {
+  width: 100%;
+  background: var(--gray-1);
+  border: 1.5px solid var(--gray-2);
+  color: var(--white);
+  padding: 0.85rem 1.1rem;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-family: 'DM Sans', sans-serif;
+  outline: none;
+  transition: border-color 0.2s;
+  -webkit-appearance: none;
+}
+textarea { resize: vertical; min-height: 100px; line-height: 1.6; }
+input:focus, textarea:focus, select:focus { border-color: var(--accent); }
+input::placeholder, textarea::placeholder { color: var(--gray-4); }
+select option { background: var(--gray-1); }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: var(--accent);
+  color: var(--black);
+  padding: 0.9rem 2rem;
+  border-radius: 100px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 1.5rem;
+  transition: background 0.2s, transform 0.15s;
+  font-family: 'DM Sans', sans-serif;
+}
+.btn:hover { background: #a8d43a; transform: translateY(-1px); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+.progress {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 2.5rem;
+}
+.progress-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--gray-3);
+  transition: background 0.2s;
+}
+.progress-dot.active { background: var(--accent); }
+.progress-dot.done { background: var(--gray-4); }
+
+.error-msg {
+  background: rgba(255,80,80,0.1);
+  border: 1px solid rgba(255,80,80,0.3);
+  color: #ff8080;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  margin-top: 1rem;
+  display: none;
+}
+
+/* Success screen */
+.success-screen { text-align: center; padding: 3rem 0; }
+.success-icon {
+  width: 64px; height: 64px;
+  background: rgba(200,242,90,0.15);
+  border: 2px solid var(--accent);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 2rem;
+  font-size: 1.75rem;
+}
+.widget-code {
+  background: var(--gray-1);
+  border: 1px solid var(--gray-2);
+  border-radius: 12px;
+  padding: 1.25rem;
+  font-family: 'Courier New', monospace;
+  font-size: 0.8rem;
+  color: var(--accent);
+  word-break: break-all;
+  text-align: left;
+  margin: 1.5rem 0;
+}
+.copy-btn {
+  background: var(--gray-2);
+  color: var(--white);
+  border: 1px solid var(--gray-3);
+  padding: 0.6rem 1.25rem;
+  border-radius: 100px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: background 0.2s;
+}
+.copy-btn:hover { background: var(--gray-3); }
+
+@media (max-width: 640px) {
+  nav { padding: 1rem 1.25rem; }
+  .container { padding: 2.5rem 1.25rem 4rem; }
+  h1 { font-size: 1.6rem; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">kulova<span>.</span></a>
+</nav>
+
+<div class="container">
+
+  <!-- STEP 0: Email -->
+  <div class="step active" id="step-0">
+    <div class="progress">
+      <div class="progress-dot active"></div>
+      <div class="progress-dot"></div>
+      <div class="progress-dot"></div>
+    </div>
+    <div class="step-label">Aloitetaan</div>
+    <h1>Mikä on sähköpostisi?</h1>
+    <p class="subtitle">Lähetämme sinulle widget-koodin ja ohjeet käyttöönoton jälkeen.</p>
+    <div class="form-group">
+      <label>Sähköposti</label>
+      <input type="email" id="email" placeholder="sinä@yritys.fi" autocomplete="email" />
+    </div>
+    <div class="error-msg" id="email-error">Tarkista sähköpostiosoite.</div>
+    <button class="btn" onclick="nextStep(0)">Jatka →</button>
+  </div>
+
+  <!-- STEP 1: Business info -->
+  <div class="step" id="step-1">
+    <div class="progress">
+      <div class="progress-dot done"></div>
+      <div class="progress-dot active"></div>
+      <div class="progress-dot"></div>
+    </div>
+    <div class="step-label">Yritystiedot</div>
+    <h1>Kerro yrityksestäsi.</h1>
+    <p class="subtitle">Näiden tietojen perusteella Kulova oppii vastaamaan asiakkaillesi oikein.</p>
+
+    <div class="form-group">
+      <label>Yrityksen nimi</label>
+      <input type="text" id="bizName" placeholder="Esim. Parturi Mikko" />
+    </div>
+    <div class="form-group">
+      <label>Toimiala <span class="label-hint">Mitä teet?</span></label>
+      <select id="bizType">
+        <option value="">Valitse toimiala</option>
+        <option value="parturi/kampaamo">Parturi / Kampaamo</option>
+        <option value="hieronta/hyvinvointi">Hieronta / Hyvinvointi</option>
+        <option value="ravintola/kahvila">Ravintola / Kahvila</option>
+        <option value="rakennusala/remontti">Rakennusala / Remontti</option>
+        <option value="lvi/sähkö">LVI / Sähkö</option>
+        <option value="verkkokauppa">Verkkokauppa</option>
+        <option value="tilitoimisto">Tilitoimisto</option>
+        <option value="muu palveluyritys">Muu palveluyritys</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Palvelut ja hinnat <span class="label-hint">Kirjoita vapaasti</span></label>
+      <textarea id="bizServices" placeholder="Esim. Naisten leikkaus 45€, miesten 35€, värjäys alkaen 80€..."></textarea>
+    </div>
+    <div class="form-group">
+      <label>Aukioloajat</label>
+      <input type="text" id="bizHours" placeholder="Esim. Ma-Pe 9-18, La 10-15" />
+    </div>
+    <div class="error-msg" id="biz-error">Täytä kaikki kentät.</div>
+    <button class="btn" onclick="nextStep(1)">Jatka →</button>
+  </div>
+
+  <!-- STEP 2: Payment or free -->
+  <div class="step" id="step-2">
+    <div class="progress">
+      <div class="progress-dot done"></div>
+      <div class="progress-dot done"></div>
+      <div class="progress-dot active"></div>
+    </div>
+    <div class="step-label" id="payment-label">Maksu</div>
+    <h1 id="payment-title">Valmis aloittamaan.</h1>
+    <p class="subtitle" id="payment-subtitle">14 päivän ilmainen kokeilu — ei korttia tarvita heti.</p>
+    <button class="btn" id="payment-btn" onclick="handlePayment()">Aloita ilmainen kokeilu →</button>
+    <div class="error-msg" id="payment-error">Jokin meni pieleen. Yritä uudelleen.</div>
+  </div>
+
+  <!-- SUCCESS -->
+  <div class="step" id="step-success">
+    <div class="success-screen">
+      <div class="success-icon">✓</div>
+      <div class="step-label">Valmis!</div>
+      <h1>Kulova on käytössä.</h1>
+      <p class="subtitle">Lisää tämä koodi nettisivusi body-tagiin ennen </p>
+      <div class="widget-code" id="widget-code-display"></div>
+      <button class="copy-btn" onclick="copyCode()">Kopioi koodi</button>
+      <p style="color:var(--gray-4);font-size:0.85rem;margin-top:2rem;line-height:1.6;">
+        Saat myös sähköpostia ohjeineen. Jos tarvitset apua asennuksessa, vastaamme osoitteessa hello@kulova.com
+      </p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const ADMIN_EMAIL = 'kalle.etelaaho15@gmail.com';
+const API = 'https://kulova-backend.vercel.app';
+let userEmail = '';
+let businessData = {};
+
+function showError(id, msg) {
+  const el = document.getElementById(id);
+  el.textContent = msg || el.textContent;
+  el.style.display = 'block';
+}
+function hideError(id) {
+  document.getElementById(id).style.display = 'none';
+}
+
+async function nextStep(current) {
+  if (current === 0) {
+    userEmail = document.getElementById('email').value.trim();
+    if (!userEmail || !userEmail.includes('@')) {
+      showError('email-error', 'Tarkista sähköpostiosoite.');
+      return;
+    }
+    hideError('email-error');
+
+    // Check if admin
+    if (userEmail.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
+      document.getElementById('payment-label').textContent = 'Admin';
+      document.getElementById('payment-title').textContent = 'Tervetuloa takaisin!';
+      document.getElementById('payment-subtitle').textContent = 'Sinulla on vapaa pääsy Kulovaan.';
+      document.getElementById('payment-btn').textContent = 'Jatka →';
+    }
+    goToStep(1);
+  }
+
+  if (current === 1) {
+    const name = document.getElementById('bizName').value.trim();
+    const type = document.getElementById('bizType').value;
+    const services = document.getElementById('bizServices').value.trim();
+    const hours = document.getElementById('bizHours').value.trim();
+
+    if (!name || !type || !services || !hours) {
+      showError('biz-error', 'Täytä kaikki kentät.');
+      return;
+    }
+    hideError('biz-error');
+    businessData = { name, type, services, hours };
+    goToStep(2);
+  }
+}
+
+async function handlePayment() {
+  const btn = document.getElementById('payment-btn');
+  btn.disabled = true;
+  btn.textContent = '...';
+
+  try {
+    const res = await fetch(API + '/api/onboard', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        businessName: businessData.name,
+        businessType: businessData.type,
+        services: businessData.services,
+        hours: businessData.hours,
+        ownerEmail: userEmail,
+        skipPayment: userEmail.toLowerCase() === ADMIN_EMAIL.toLowerCase()
+      })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) throw new Error(data.error);
+
+    if (data.checkoutUrl && userEmail.toLowerCase() !== ADMIN_EMAIL.toLowerCase()) {
+      window.location.href = data.checkoutUrl;
+    } else {
+      // Admin or free — show widget code
+      const code = data.widgetCode || `<script src="https://kulova-backend.vercel.app/api/widget.js" data-business="${data.businessId}"><\/script>`;
+      document.getElementById('widget-code-display').textContent = code;
+      goToStep('success');
+    }
+  } catch(e) {
+    showError('payment-error', 'Jokin meni pieleen — yritä uudelleen.');
+    btn.disabled = false;
+    btn.textContent = 'Aloita ilmainen kokeilu →';
+  }
+}
+
+function copyCode() {
+  const code = document.getElementById('widget-code-display').textContent;
+  navigator.clipboard.writeText(code);
+  document.querySelector('.copy-btn').textContent = 'Kopioitu!';
+  setTimeout(() => document.querySelector('.copy-btn').textContent = 'Kopioi koodi', 2000);
+}
+
+function goToStep(n) {
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  if (n === 'success') {
+    document.getElementById('step-success').classList.add('active');
+  } else {
+    document.getElementById('step-' + n).classList.add('active');
+  }
+}
+
+// Enter key support
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey && e.target.tagName !== 'TEXTAREA') {
+    const activeStep = document.querySelector('.step.active');
+    if (activeStep?.id === 'step-0') nextStep(0);
+    if (activeStep?.id === 'step-1') nextStep(1);
+  }
+});
+</script>
+</body>
+</html>
