@@ -595,7 +595,7 @@ async function sendTest() {
     const res = await fetch(`${API}/api/chat`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ business_id: currentBid, message: msg, session_id: 'test-' + currentBid })
+      body: JSON.stringify({ businessId: currentBid, message: msg, sessionId: 'test-' + currentBid })
     });
     const data = await res.json();
     document.getElementById(loadId)?.remove();
