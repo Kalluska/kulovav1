@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kulova — Hallintapaneeli</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --black: #0a0a08;
+  --white: #f5f3ee;
+  --accent: #c8f25a;
+  --gray-1: #1a1a17;
+  --gray-2: #2a2a26;
+  --gray-3: #3d3d38;
+  --gray-4: #6b6b63;
+  --gray-5: #9a9a90;
+  --sidebar: 240px;
+}
+body { background: var(--black); color: var(--white); font-family: 'DM Sans', sans-serif; min-height: 100vh; }
+
+/* AUTH SCREEN */
+#auth-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+.auth-box {
+  background: var(--gray-1);
+  border: 1px solid var(--gray-2);
+  border-radius: 20px;
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 400px;
+}
+.auth-logo { font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 800; margin-bottom: 2rem; }
+.auth-logo span { color: var(--accent); }
+.auth-box h2 { font-family: 'Syne', sans-serif; font-size: 1.4rem; font-weight: 700; margin-bottom: 0.5rem; }
+.auth-box p { color: var(--gray-5); font-size: 0.9rem; margin-bottom: 2rem; font-weight: 300; }
+.auth-box input {
+  width: 100%; background: var(--gray-2); border: 1.5px solid var(--gray-3);
+  color: var(--white); padding: 0.85rem 1rem; border-radius: 10px;
+  font-size: 0.95rem; font-family: 'DM Sans', sans-serif; outline: none; margin-bottom: 1rem;
+}
+.auth-box input:focus { border-color: var(--accent); }
+.auth-box input::placeholder { color: var(--gray-4); }
+.btn-auth {
+  width: 100%; background: var(--accent); color: var(--black);
+  padding: 0.9rem; border-radius: 100px; border: none; cursor: pointer;
+  font-weight: 600; font-size: 0.95rem; font-family: 'DM Sans', sans-serif;
+  transition: background 0.2s;
+}
+.btn-auth:hover { background: #a8d43a; }
+.auth-error { color: #ff8080; font-size: 0.85rem; margin-top: 0.75rem; display: none; }
+
+/* APP LAYOUT */
+#app { display: none; min-height: 100vh; }
+.layout { display: flex; min-height: 100vh; }
+
+/* SIDEBAR */
+.sidebar {
+  width: var(--sidebar);
+  background: var(--gray-1);
+  border-right: 1px solid var(--gray-2);
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 0;
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+}
+.sidebar-logo {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 800;
+  padding: 0 1.5rem 1.5rem;
+  border-bottom: 1px solid var(--gray-2);
+  margin-bottom: 1rem;
+}
+.sidebar-logo span { color: var(--accent); }
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.7rem 1.5rem;
+  color: var(--gray-5);
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 400;
+  transition: all 0.15s;
+  border-left: 2px solid transparent;
+}
+.nav-item:hover { color: var(--white); background: rgba(255,255,255,0.03); }
+.nav-item.active { color: var(--white); border-left-color: var(--accent); background: rgba(200,242,90,0.05); }
+.nav-icon { font-size: 1rem; width: 20px; text-align: center; }
+.sidebar-bottom { margin-top: auto; padding: 1rem 1.5rem; border-top: 1px solid var(--gray-2); }
+.biz-name { font-size: 0.8rem; color: var(--gray-5); font-weight: 300; }
+.biz-email { font-size: 0.75rem; color: var(--gray-4); margin-top: 0.2rem; }
+
+/* MAIN */
+.main {
+  margin-left: var(--sidebar);
+  flex: 1;
+  padding: 2.5rem;
+  max-width: calc(100% - var(--sidebar));
+}
+
+/* PAGES */
+.page { display: none; }
+.page.active { display: block; }
+
+/* STATS GRID */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+.stat-card {
+  background: var(--gray-1);
+  border: 1px solid var(--gray-2);
+  border-radius: 14px;
+  padding: 1.5rem;
+}
+.stat-value {
+  font-family: 'Syne', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: 0.4rem;
+}
+.stat-label { color: var(--gray-5); font-size: 0.85rem; font-weight: 300; }
+
+/* SECTION HEADER */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+}
+.section-title { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 600; }
+
+/* CONVERSATIONS */
+.conv-list { display: flex; flex-direction: column; gap: 0.75rem; }
+.conv-item {
+  background: var(--gray-1);
+  border: 1px solid var(--gray-2);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.conv-item:hover { border-color: var(--gray-3); }
+.conv-item.selected { border-color: var(--accent); }
+.conv-id { font-size: 0.8rem; color: var(--gray-5); font-family: monospace; }
+.conv-meta { font-size: 0.75rem; color: var(--gray-4); }
+.conv-count {
+  background: var(--gray-2);
+  color: var(--gray-5);
+  font-size: 0.75rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 100px;
+}
+
+/* MESSAGES PANEL */
+.messages-panel {
+  background: var(--gray-1);
+  border: 1px solid var(--gray-2);
+  border-radius: 14px;
+  overflow: hidden;
+  margin-top: 1.5rem;
+}
+.messages-panel-header {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--gray-2);
+  font-size: 0.85rem;
+  color: var(--gray-5);
+  display: flex;
+  justify-content: space-between;
+}
+.messages-list {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-height: 400px;
+  overflow-y: auto;
+}
+.msg-bubble {
+  max-width: 75%;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  line-height: 1.55;
+}
+.msg-bubble.user { background: var(--gray-2); color: var(--gray-5); align-self: flex-start; }
+.msg-bubble.assistant { background: rgba(200,242,90,0.08); border: 1px solid rgba(200,242,90,0.15); color: var(--white); align-self: flex-end; }
+.msg-time { font-size: 0.7rem; color: var(--gray-4); margin-top: 0.25rem; }
+
+/* SETTINGS */
+.settings-card {
+  background: var(--gray-1);
+  border: 1px solid var(--gray-2);
+  border-radius: 14px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+.settings-card h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 1rem; }
+.field-group { margin-bottom: 1rem; }
+.field-group label { display: block; font-size: 0.8rem; color: var(--gray-5); margin-bottom: 0.4rem; }
+.field-group input, .field-group textarea {
+  width: 100%; background: var(--gray-2); border: 1.5px solid var(--gray-3);
+  color: var(--white); padding: 0.75rem 1rem; border-radius: 10px;
+  font-size: 0.9rem; font-family: 'DM Sans', sans-serif; outline: none;
+}
+.field-group textarea { min-height: 80px; resize: vertical; }
+.field-group input:focus, .field-group textarea:focus { border-color: var(--accent); }
+.btn-save {
+  background: var(--accent); color: var(--black); padding: 0.75rem 1.5rem;
+  border-radius: 100px; border: none; cursor: pointer; font-weight: 600;
+  font-size: 0.875rem; font-family: 'DM Sans', sans-serif; transition: background 0.2s;
+}
+.btn-save:hover { background: #a8d43a; }
+
+/* WIDGET CODE */
+.code-block {
+  background: var(--gray-2);
+  border: 1px solid var(--gray-3);
+  border-radius: 10px;
+  padding: 1rem;
+  font-family: monospace;
+  font-size: 0.8rem;
+  color: var(--accent);
+  word-break: break-all;
+  margin: 0.75rem 0;
+}
+.btn-copy {
+  background: var(--gray-2); color: var(--white); border: 1px solid var(--gray-3);
+  padding: 0.5rem 1rem; border-radius: 100px; font-size: 0.8rem; cursor: pointer;
+  font-family: 'DM Sans', sans-serif; transition: background 0.2s;
+}
+.btn-copy:hover { background: var(--gray-3); }
+
+.page-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1.75rem;
+  letter-spacing: -0.02em;
+}
+.empty-state { color: var(--gray-4); font-size: 0.9rem; padding: 2rem 0; }
+.loading { color: var(--gray-4); font-size: 0.875rem; }
+.badge {
+  display: inline-block;
+  background: rgba(200,242,90,0.12);
+  color: var(--accent);
+  font-size: 0.7rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 100px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .main { margin-left: 0; max-width: 100%; padding: 1.25rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- AUTH -->
+<div id="auth-screen">
+  <div class="auth-box">
+    <div class="auth-logo">kulova<span>.</span></div>
+    <h2>Kirjaudu sisään</h2>
+    <p>Syötä sähköpostisi ja yritystunnuksesi.</p>
+    <input type="email" id="auth-email" placeholder="sinä@yritys.fi" autocomplete="email" />
+    <input type="text" id="auth-bid" placeholder="Yritystunnus (biz_...)" autocomplete="off" />
+    <button class="btn-auth" onclick="login()">Kirjaudu →</button>
+    <div class="auth-error" id="auth-error">Sähköposti tai tunnus ei täsmää.</div>
+    <p style="margin-top:1rem;font-size:0.75rem;color:var(--gray-4);">Löydät yritystunnuksen rekisteröitymisen jälkeen saamastasi sähköpostista.</p>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-logo">kulova<span>.</span></div>
+      <nav>
+        <div class="nav-item active" onclick="showPage('dashboard')">
+          <span class="nav-icon">📊</span> Yhteenveto
+        </div>
+        <div class="nav-item" onclick="showPage('conversations')">
+          <span class="nav-icon">💬</span> Keskustelut
+        </div>
+        <div class="nav-item" onclick="showPage('settings')">
+          <span class="nav-icon">⚙️</span> Asetukset
+        </div>
+        <div class="nav-item" onclick="showPage('widget')">
+          <span class="nav-icon">🔧</span> Widget-koodi
+        </div>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="biz-name" id="sb-bizname">—</div>
+        <div class="biz-email" id="sb-email">—</div>
+      </div>
+    </aside>
+
+    <main class="main">
+
+      <!-- DASHBOARD -->
+      <div class="page active" id="page-dashboard">
+        <div class="page-title">Yhteenveto</div>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-value" id="stat-convs">—</div>
+            <div class="stat-label">Keskustelua yhteensä</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="stat-msgs">—</div>
+            <div class="stat-label">Viestiä vastattu</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="stat-today">—</div>
+            <div class="stat-label">Tänään</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">24/7</div>
+            <div class="stat-label">Kulova töissä</div>
+          </div>
+        </div>
+
+        <div class="section-header">
+          <div class="section-title">Viimeisimmät keskustelut</div>
+        </div>
+        <div class="conv-list" id="recent-convs">
+          <div class="loading">Ladataan...</div>
+        </div>
+      </div>
+
+      <!-- CONVERSATIONS -->
+      <div class="page" id="page-conversations">
+        <div class="page-title">Keskustelut</div>
+        <div class="conv-list" id="all-convs">
+          <div class="loading">Ladataan...</div>
+        </div>
+        <div class="messages-panel" id="messages-panel" style="display:none">
+          <div class="messages-panel-header">
+            <span id="panel-conv-id">Keskustelu</span>
+            <span id="panel-conv-time"></span>
+          </div>
+          <div class="messages-list" id="messages-list"></div>
+        </div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div class="page" id="page-settings">
+        <div class="page-title">Asetukset</div>
+        <div class="settings-card">
+          <h3>Yritystiedot</h3>
+          <div class="field-group">
+            <label>Yrityksen nimi</label>
+            <input type="text" id="set-name" />
+          </div>
+          <div class="field-group">
+            <label>Palvelut ja hinnat</label>
+            <textarea id="set-services"></textarea>
+          </div>
+          <div class="field-group">
+            <label>Aukioloajat</label>
+            <input type="text" id="set-hours" />
+          </div>
+          <button class="btn-save" onclick="saveSettings()">Tallenna muutokset</button>
+          <span id="save-status" style="margin-left:1rem;font-size:0.85rem;color:var(--accent);display:none">Tallennettu!</span>
+        </div>
+      </div>
+
+      <!-- WIDGET -->
+      <div class="page" id="page-widget">
+        <div class="page-title">Widget-koodi</div>
+        <div class="settings-card">
+          <h3>Lisää Kulova nettisivullesi</h3>
+          <p style="color:var(--gray-5);font-size:0.875rem;margin-bottom:1rem;line-height:1.6;font-weight:300;">
+            Kopioi tämä koodi nettisivusi &lt;body&gt;-tagin loppuun. Chat-nappi ilmestyy oikeaan alakulmaan.
+          </p>
+          <div class="code-block" id="widget-code-block">—</div>
+          <button class="btn-copy" onclick="copyWidget()">Kopioi koodi</button>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://eacfiiscsdqdcoduyzkk.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVhY2ZpaXNjc2RxZGNvZHV5emtrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA1NzMwNzksImV4cCI6MjA5NjE0OTA3OX0.zTH7rMHsVw3gxhBeqffc0PJS7aaValbf_hk4qK-xmFU';
+const ADMIN_EMAIL = 'kalle.etelaaho15@gmail.com';
+const API = 'https://kulova-backend.vercel.app';
+
+let currentBusiness = null;
+let currentBid = null;
+
+async function sb(path) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
+    headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+  });
+  return res.json();
+}
+
+async function sbPatch(path, data) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` },
+    body: JSON.stringify(data)
+  });
+  return res.ok;
+}
+
+// Check URL params for auto-login
+window.addEventListener('DOMContentLoaded', () => {
+  const params = new URLSearchParams(window.location.search);
+  const email = params.get('email');
+  const bid = params.get('bid');
+  if (email && bid) {
+    document.getElementById('auth-email').value = email;
+    document.getElementById('auth-bid').value = bid;
+    login();
+  }
+});
+
+async function login() {
+  const email = document.getElementById('auth-email').value.trim().toLowerCase();
+  const bid = document.getElementById('auth-bid').value.trim();
+
+  if (!email || !bid) {
+    document.getElementById('auth-error').style.display = 'block';
+    return;
+  }
+
+  // Fetch business
+  try {
+    const rows = await sb(`businesses?id=eq.${bid}&select=*`);
+    const biz = rows[0];
+
+    if (!biz || biz.owner_email.toLowerCase() !== email) {
+      document.getElementById('auth-error').style.display = 'block';
+      return;
+    }
+
+    currentBusiness = biz;
+    currentBid = bid;
+
+    // Show app
+    document.getElementById('auth-screen').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    document.getElementById('sb-bizname').textContent = biz.name;
+    document.getElementById('sb-email').textContent = email;
+
+    // Load settings
+    document.getElementById('set-name').value = biz.name || '';
+    document.getElementById('set-services').value = biz.services || '';
+    document.getElementById('set-hours').value = biz.hours || '';
+
+    // Widget code
+    const wc = `<script src="${API}/api/widget.js" data-business="${bid}"><\/script>`;
+    document.getElementById('widget-code-block').textContent = wc;
+
+    loadDashboard();
+  } catch(e) {
+    document.getElementById('auth-error').style.display = 'block';
+  }
+}
+
+async function loadDashboard() {
+  try {
+    const convs = await sb(`conversations?business_id=eq.${currentBid}&select=*&order=last_message_at.desc`);
+    const msgs = await sb(`messages?business_id=eq.${currentBid}&select=id`);
+    const today = new Date().toISOString().split('T')[0];
+    const todayMsgs = await sb(`messages?business_id=eq.${currentBid}&created_at=gte.${today}&select=id`);
+
+    document.getElementById('stat-convs').textContent = convs.length;
+    document.getElementById('stat-msgs').textContent = msgs.length;
+    document.getElementById('stat-today').textContent = todayMsgs.length;
+
+    renderConvList('recent-convs', convs.slice(0, 5));
+    renderConvList('all-convs', convs);
+  } catch(e) {
+    document.getElementById('recent-convs').innerHTML = '<div class="empty-state">Ei vielä keskusteluja.</div>';
+  }
+}
+
+function renderConvList(containerId, convs) {
+  const el = document.getElementById(containerId);
+  if (!convs.length) {
+    el.innerHTML = '<div class="empty-state">Ei vielä keskusteluja. Chat-widgetin kautta tulevat viestit näkyvät täällä.</div>';
+    return;
+  }
+  el.innerHTML = convs.map(c => `
+    <div class="conv-item" onclick="loadMessages('${c.id}', '${c.customer_identifier}', '${c.last_message_at}')">
+      <div>
+        <div style="font-size:0.875rem;margin-bottom:0.2rem;">${c.customer_identifier?.slice(0,16)}...</div>
+        <div class="conv-id">${new Date(c.last_message_at).toLocaleString('fi-FI')}</div>
+      </div>
+      <span class="conv-count">${c.message_count} viestiä</span>
+    </div>
+  `).join('');
+}
+
+async function loadMessages(convId, identifier, lastTime) {
+  document.querySelectorAll('.conv-item').forEach(el => el.classList.remove('selected'));
+  event.currentTarget.classList.add('selected');
+
+  const panel = document.getElementById('messages-panel');
+  panel.style.display = 'block';
+  document.getElementById('panel-conv-id').textContent = identifier?.slice(0,20) + '...';
+  document.getElementById('panel-conv-time').textContent = new Date(lastTime).toLocaleString('fi-FI');
+  document.getElementById('messages-list').innerHTML = '<div class="loading">Ladataan...</div>';
+
+  try {
+    const msgs = await sb(`messages?conversation_id=eq.${convId}&select=*&order=created_at.asc`);
+    document.getElementById('messages-list').innerHTML = msgs.map(m => `
+      <div>
+        <div class="msg-bubble ${m.role}">${m.content}</div>
+        <div class="msg-time" style="text-align:${m.role === 'assistant' ? 'right' : 'left'}">${new Date(m.created_at).toLocaleTimeString('fi-FI')}</div>
+      </div>
+    `).join('');
+    document.getElementById('messages-list').scrollTop = 9999;
+  } catch(e) {
+    document.getElementById('messages-list').innerHTML = '<div class="empty-state">Virhe ladatessa viestejä.</div>';
+  }
+}
+
+async function saveSettings() {
+  const name = document.getElementById('set-name').value.trim();
+  const services = document.getElementById('set-services').value.trim();
+  const hours = document.getElementById('set-hours').value.trim();
+
+  const ok = await sbPatch(`businesses?id=eq.${currentBid}`, { name, services, hours });
+  if (ok) {
+    currentBusiness.name = name;
+    document.getElementById('sb-bizname').textContent = name;
+    const status = document.getElementById('save-status');
+    status.style.display = 'inline';
+    setTimeout(() => status.style.display = 'none', 2000);
+  }
+}
+
+function copyWidget() {
+  const code = document.getElementById('widget-code-block').textContent;
+  navigator.clipboard.writeText(code);
+  const btn = document.querySelector('.btn-copy');
+  btn.textContent = 'Kopioitu!';
+  setTimeout(() => btn.textContent = 'Kopioi koodi', 2000);
+}
+
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  event.currentTarget.classList.add('active');
+  if (name === 'conversations') loadDashboard();
+}
+
+// Enter to login
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && document.getElementById('auth-screen').style.display !== 'none') login();
+});
+</script>
+</body>
+</html>
