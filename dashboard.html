@@ -573,6 +573,41 @@ async function saveSettings() {
   }
 }
 
+async function sendTest() {
+  const input = document.getElementById('test-input');
+  const msg = input.value.trim();
+  if (!msg || !currentBid) return;
+  input.value = '';
+
+  const chat = document.getElementById('test-chat');
+  // Tyhjennä placeholder
+  if (chat.querySelector('[data-placeholder]')) chat.innerHTML = '';
+
+  // Näytä käyttäjän viesti
+  chat.innerHTML += `<div style="background:var(--gray-3);padding:0.6rem 0.9rem;border-radius:10px;font-size:0.875rem;align-self:flex-end;max-width:80%;margin-left:auto">${msg}</div>`;
+  
+  // Näytä latausindikaattori
+  const loadId = 'load-' + Date.now();
+  chat.innerHTML += `<div id="${loadId}" style="color:var(--gray-5);font-size:0.8rem;padding:0.4rem 0.6rem;">Botti kirjoittaa...</div>`;
+  chat.scrollTop = 9999;
+
+  try {
+    const res = await fetch(`${API}/api/chat`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ business_id: currentBid, message: msg, session_id: 'test-' + currentBid })
+    });
+    const data = await res.json();
+    document.getElementById(loadId)?.remove();
+    const reply = data.reply || data.message || data.response || JSON.stringify(data);
+    chat.innerHTML += `<div style="background:rgba(200,242,90,0.08);border:1px solid rgba(200,242,90,0.15);padding:0.6rem 0.9rem;border-radius:10px;font-size:0.875rem;max-width:80%">${reply}</div>`;
+  } catch(e) {
+    document.getElementById(loadId)?.remove();
+    chat.innerHTML += `<div style="color:#ff6b6b;font-size:0.8rem;padding:0.4rem">Virhe: ${e.message}</div>`;
+  }
+  chat.scrollTop = 9999;
+}
+
 function copyWidget() {
   const code = document.getElementById('widget-code-block').textContent;
   navigator.clipboard.writeText(code);
