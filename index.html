@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kulova — Vastaa asiakkaillesi kun et pysty itse</title>
+<meta name="description" content="Kulova vastaa asiakkaillesi kun et pysty itse. AI-agentti joka hoitaa viestisi 24/7 — WhatsApp, sähköposti, nettisivu.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #0a0a08;
+    --white: #f5f3ee;
+    --accent: #c8f25a;
+    --accent-dim: #a8d43a;
+    --gray-1: #1a1a17;
+    --gray-2: #2a2a26;
+    --gray-3: #3d3d38;
+    --gray-4: #6b6b63;
+    --gray-5: #9a9a90;
+    --font-display: 'Syne', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 17px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 1.25rem 2.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    background: rgba(10,10,8,0.85);
+    backdrop-filter: blur(12px);
+  }
+
+  .logo {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--white);
+    text-decoration: none;
+  }
+
+  .logo span { color: var(--accent); }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--gray-5);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 400;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--white); }
+
+  .nav-cta {
+    background: var(--accent) !important;
+    color: var(--black) !important;
+    padding: 0.5rem 1.25rem !important;
+    border-radius: 100px !important;
+    font-weight: 500 !important;
+    font-size: 0.875rem !important;
+    transition: background 0.2s !important;
+  }
+
+  .nav-cta:hover { background: var(--accent-dim) !important; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 8rem 2.5rem 5rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--gray-2);
+    border: 1px solid var(--gray-3);
+    color: var(--gray-5);
+    font-size: 0.8rem;
+    font-weight: 400;
+    padding: 0.35rem 0.85rem;
+    border-radius: 100px;
+    margin-bottom: 2.5rem;
+    width: fit-content;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .hero-tag::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    display: inline-block;
+  }
+
+  h1 {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 7vw, 6.5rem);
+    font-weight: 800;
+    line-height: 1.0;
+    letter-spacing: -0.03em;
+    margin-bottom: 2rem;
+    max-width: 14ch;
+  }
+
+  h1 em {
+    font-style: normal;
+    color: var(--accent);
+  }
+
+  .hero-sub {
+    font-size: 1.2rem;
+    color: var(--gray-5);
+    max-width: 52ch;
+    margin-bottom: 3rem;
+    font-weight: 300;
+    line-height: 1.7;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--accent);
+    color: var(--black);
+    padding: 0.9rem 2rem;
+    border-radius: 100px;
+    font-weight: 500;
+    font-size: 1rem;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.15s;
+  }
+
+  .btn-primary:hover {
+    background: var(--accent-dim);
+    transform: translateY(-1px);
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--gray-5);
+    font-size: 0.95rem;
+    text-decoration: none;
+    padding: 0.9rem 0;
+    transition: color 0.2s;
+  }
+
+  .btn-secondary:hover { color: var(--white); }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 3rem;
+    left: 2.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--gray-4);
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .scroll-line {
+    width: 40px;
+    height: 1px;
+    background: var(--gray-3);
+  }
+
+  /* NUMBERS */
+  .numbers {
+    border-top: 1px solid var(--gray-2);
+    padding: 5rem 2.5rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .numbers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 0;
+  }
+
+  .number-item {
+    padding: 2rem;
+    border-right: 1px solid var(--gray-2);
+  }
+
+  .number-item:last-child { border-right: none; }
+
+  .number-value {
+    font-family: var(--font-display);
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.03em;
+  }
+
+  .number-label {
+    color: var(--gray-5);
+    font-size: 0.9rem;
+    font-weight: 300;
+  }
+
+  /* HOW */
+  .how {
+    padding: 6rem 2.5rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gray-4);
+    margin-bottom: 1rem;
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.1;
+    margin-bottom: 4rem;
+    max-width: 20ch;
+  }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1px;
+    background: var(--gray-2);
+    border: 1px solid var(--gray-2);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .step {
+    background: var(--gray-1);
+    padding: 2.5rem;
+    position: relative;
+  }
+
+  .step-num {
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    margin-bottom: 1.5rem;
+  }
+
+  .step h3 {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.01em;
+  }
+
+  .step p {
+    color: var(--gray-5);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  /* FEATURES */
+  .features {
+    padding: 6rem 2.5rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 4rem;
+  }
+
+  .feature-card {
+    background: var(--gray-1);
+    border: 1px solid var(--gray-2);
+    border-radius: 16px;
+    padding: 2rem;
+    transition: border-color 0.2s;
+  }
+
+  .feature-card:hover { border-color: var(--gray-3); }
+
+  .feature-icon {
+    width: 40px; height: 40px;
+    background: var(--gray-2);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.25rem;
+    font-size: 1.1rem;
+  }
+
+  .feature-card h3 {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.01em;
+  }
+
+  .feature-card p {
+    color: var(--gray-5);
+    font-size: 0.875rem;
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  /* PRICING */
+  .pricing {
+    padding: 6rem 2.5rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .pricing-card {
+    background: var(--gray-1);
+    border: 1px solid var(--gray-2);
+    border-radius: 20px;
+    padding: 3rem;
+    max-width: 480px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .pricing-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--accent);
+  }
+
+  .pricing-badge {
+    display: inline-block;
+    background: rgba(200, 242, 90, 0.12);
+    color: var(--accent);
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0.3rem 0.75rem;
+    border-radius: 100px;
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .pricing-price {
+    font-family: var(--font-display);
+    font-size: 4rem;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    margin-bottom: 0.25rem;
+  }
+
+  .pricing-price sup {
+    font-size: 1.5rem;
+    font-weight: 500;
+    vertical-align: super;
+  }
+
+  .pricing-price-sub {
+    color: var(--gray-5);
+    font-size: 0.875rem;
+    margin-bottom: 2rem;
+    font-weight: 300;
+  }
+
+  .pricing-features {
+    list-style: none;
+    margin-bottom: 2.5rem;
+  }
+
+  .pricing-features li {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--gray-2);
+    font-size: 0.9rem;
+    font-weight: 300;
+    color: var(--gray-5);
+  }
+
+  .pricing-features li:last-child { border-bottom: none; }
+
+  .pricing-features li::before {
+    content: '';
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: rgba(200, 242, 90, 0.15);
+    border: 1px solid var(--accent);
+    flex-shrink: 0;
+    position: relative;
+  }
+
+  .pricing-features li::before {
+    content: '✓';
+    color: var(--accent);
+    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* TESTIMONIAL / PAIN */
+  .pain {
+    padding: 6rem 2.5rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .pain-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--gray-2);
+    border: 1px solid var(--gray-2);
+    border-radius: 16px;
+    overflow: hidden;
+    margin-top: 4rem;
+  }
+
+  .pain-side {
+    padding: 3rem;
+    background: var(--gray-1);
+  }
+
+  .pain-side.right { background: var(--black); }
+
+  .pain-label {
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+  }
+
+  .pain-label.bad { color: var(--gray-4); }
+  .pain-label.good { color: var(--accent); }
+
+  .pain-messages { display: flex; flex-direction: column; gap: 0.75rem; }
+
+  .msg {
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    max-width: 85%;
+  }
+
+  .msg.incoming {
+    background: var(--gray-2);
+    color: var(--gray-5);
+    align-self: flex-start;
+  }
+
+  .msg.outgoing-bad {
+    background: var(--gray-3);
+    color: var(--gray-4);
+    align-self: flex-end;
+    font-style: italic;
+  }
+
+  .msg.outgoing-good {
+    background: rgba(200, 242, 90, 0.1);
+    border: 1px solid rgba(200, 242, 90, 0.2);
+    color: var(--white);
+    align-self: flex-end;
+  }
+
+  .msg-time {
+    font-size: 0.7rem;
+    color: var(--gray-4);
+    margin-top: 0.25rem;
+    text-align: right;
+  }
+
+  /* CTA */
+  .cta-section {
+    padding: 6rem 2.5rem 8rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .cta-section h2 {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 5vw, 5rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    margin-bottom: 1.5rem;
+  }
+
+  .cta-section h2 em {
+    font-style: normal;
+    color: var(--accent);
+  }
+
+  .cta-section p {
+    color: var(--gray-5);
+    font-size: 1.1rem;
+    margin-bottom: 3rem;
+    font-weight: 300;
+    max-width: 50ch;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--gray-2);
+    padding: 2.5rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  footer p {
+    color: var(--gray-4);
+    font-size: 0.8rem;
+    font-weight: 300;
+  }
+
+  .footer-logo {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--gray-3);
+    letter-spacing: -0.02em;
+  }
+
+  .footer-logo span { color: var(--gray-4); }
+
+  /* LANG TOGGLE */
+  .lang-toggle {
+    display: flex;
+    gap: 0.25rem;
+    background: var(--gray-2);
+    border-radius: 100px;
+    padding: 0.2rem;
+  }
+
+  .lang-btn {
+    padding: 0.25rem 0.65rem;
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    color: var(--gray-5);
+    transition: all 0.15s;
+    letter-spacing: 0.04em;
+  }
+
+  .lang-btn.active {
+    background: var(--gray-1);
+    color: var(--white);
+  }
+
+  /* EARLY ACCESS FORM */
+  .early-form {
+    display: flex;
+    gap: 0.75rem;
+    max-width: 420px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .early-form input {
+    flex: 1;
+    min-width: 200px;
+    background: var(--gray-1);
+    border: 1px solid var(--gray-2);
+    color: var(--white);
+    padding: 0.9rem 1.25rem;
+    border-radius: 100px;
+    font-size: 0.95rem;
+    font-family: var(--font-body);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .early-form input::placeholder { color: var(--gray-4); }
+  .early-form input:focus { border-color: var(--gray-3); }
+
+  .form-note {
+    color: var(--gray-4);
+    font-size: 0.8rem;
+    margin-top: 1rem;
+    font-weight: 300;
+  }
+
+  /* EN/FI content switching */
+  [data-lang="en"] { display: none; }
+  body.lang-en [data-lang="fi"] { display: none; }
+  body.lang-en [data-lang="en"] { display: block; }
+  body.lang-en span[data-lang="en"] { display: inline; }
+  body.lang-en span[data-lang="fi"] { display: none; }
+  span[data-lang="en"] { display: none; }
+
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.25rem; }
+    .nav-links { display: none; }
+    .nav-links.open {
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: var(--black);
+      z-index: 99;
+      justify-content: center;
+      align-items: center;
+      gap: 2rem;
+    }
+    .nav-links.open a { font-size: 1.5rem; color: var(--white); }
+    .hamburger { display: flex; flex-direction: column; gap: 5px; cursor: pointer; z-index: 101; }
+    .hamburger span { width: 24px; height: 2px; background: var(--white); transition: all 0.2s; display: block; }
+    .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+    .hero { padding: 7rem 1.25rem 4rem; }
+    .numbers { padding: 3rem 1.25rem; }
+    .number-item { border-right: none; border-bottom: 1px solid var(--gray-2); padding: 1.5rem 0; }
+    .number-item:last-child { border-bottom: none; }
+    .how, .features, .pricing, .pain, .cta-section { padding: 4rem 1.25rem; }
+    .pain-grid { grid-template-columns: 1fr; }
+    footer { flex-direction: column; gap: 1rem; text-align: center; }
+  }
+  .hamburger { display: none; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-tag, h1, .hero-sub, .hero-actions {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.7s ease forwards;
+    }
+    .hero-tag { animation-delay: 0.1s; }
+    h1 { animation-delay: 0.2s; }
+    .hero-sub { animation-delay: 0.35s; }
+    .hero-actions { animation-delay: 0.5s; }
+
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">kulova<span>.</span></a>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="#miten" data-lang="fi">Miten toimii</a><a href="#miten" data-lang="en" style="display:none">How it works</a></li>
+    <li><a href="#hinnat" data-lang="fi">Hinnat</a><a href="#hinnat" data-lang="en" style="display:none">Pricing</a></li>
+    <li>
+      <div class="lang-toggle">
+        <button class="lang-btn active" onclick="setLang('fi')">FI</button>
+        <button class="lang-btn" onclick="setLang('en')">EN</button>
+      </div>
+    </li>
+    <li><a href="#early" class="nav-cta" data-lang="fi">Varaa paikkasi</a><a href="#early" class="nav-cta" data-lang="en" style="display:none">Reserve your spot</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="hero-tag" data-lang="fi">AI-agentti yrittäjille</div>
+  <div class="hero-tag" data-lang="en">AI agent for entrepreneurs</div>
+
+  <h1 data-lang="fi">Kulova vastaa asiakkaillesi kun et pysty itse.</h1>
+  <h1 data-lang="en">Kulova replies to your customers when you can't.</h1>
+
+  <p class="hero-sub" data-lang="fi">Asiakas kirjoittaa yöllä. Kulova vastaa heti. Sinä heräät valmiiseen varaukseen.</p>
+  <p class="hero-sub" data-lang="en">Customer writes at night. Kulova replies instantly. You wake up to a booking.</p>
+
+  <div class="hero-actions">
+    <a href="#early" class="btn-primary" data-lang="fi">Varaa paikkasi →</a>
+    <a href="#early" class="btn-primary" data-lang="en">Reserve your spot →</a>
+    <a href="#miten" class="btn-secondary" data-lang="fi">Miten se toimii?</a>
+    <a href="#miten" class="btn-secondary" data-lang="en">How does it work?</a>
+  </div>
+
+  <div class="hero-scroll">
+    <span class="scroll-line"></span>
+    <span data-lang="fi">Lue lisää</span>
+    <span data-lang="en">Scroll down</span>
+  </div>
+</section>
+
+<section class="numbers">
+  <div class="numbers-grid">
+    <div class="number-item">
+      <div class="number-value">24/7</div>
+      <div class="number-label" data-lang="fi">Aina tavoitettavissa</div>
+      <div class="number-label" data-lang="en">Always available</div>
+    </div>
+    <div class="number-item">
+      <div class="number-value">&lt;30s</div>
+      <div class="number-label" data-lang="fi">Vastausaika keskimäärin</div>
+      <div class="number-label" data-lang="en">Average response time</div>
+    </div>
+    <div class="number-item">
+      <div class="number-value">10min</div>
+      <div class="number-label" data-lang="fi">Käyttöönotto</div>
+      <div class="number-label" data-lang="en">Setup time</div>
+    </div>
+    <div class="number-item">
+      <div class="number-value">49€</div>
+      <div class="number-label" data-lang="fi">Per kuukausi, ei muuta</div>
+      <div class="number-label" data-lang="en">Per month, nothing else</div>
+    </div>
+  </div>
+</section>
+
+<section class="pain">
+  <div class="section-label" data-lang="fi">Ennen ja jälkeen</div>
+  <div class="section-label" data-lang="en">Before and after</div>
+  <div class="section-title" data-lang="fi">Tämä on tuttu tilanne.</div>
+  <div class="section-title" data-lang="en">Sound familiar?</div>
+
+  <div class="pain-grid">
+    <div class="pain-side">
+      <div class="pain-label bad" data-lang="fi">Ilman Kulovaa</div>
+      <div class="pain-label bad" data-lang="en">Without Kulova</div>
+      <div class="pain-messages">
+        <div class="msg incoming" data-lang="fi">Hei, paljonko maksaa hiustenleikkaus? Onko teillä vapaata huomenna?</div>
+        <div class="msg incoming" data-lang="en">Hi, how much for a haircut? Any slots tomorrow?</div>
+        <div class="msg outgoing-bad" data-lang="fi">— ei vastausta —<br><span style="font-size:0.75rem">vastasit aamulla. asiakas oli jo varannut muualta.</span></div>
+        <div class="msg outgoing-bad" data-lang="en">— no reply —<br><span style="font-size:0.75rem">you replied in the morning. they'd already booked elsewhere.</span></div>
+      </div>
+    </div>
+    <div class="pain-side right">
+      <div class="pain-label good" data-lang="fi">Kulovan kanssa</div>
+      <div class="pain-label good" data-lang="en">With Kulova</div>
+      <div class="pain-messages">
+        <div class="msg incoming" data-lang="fi">Hei, paljonko maksaa hiustenleikkaus? Onko teillä vapaata huomenna?</div>
+        <div class="msg incoming" data-lang="en">Hi, how much for a haircut? Any slots tomorrow?</div>
+        <div class="msg outgoing-good" data-lang="fi">Hei! Naisten leikkaus 45€, miesten 35€. Huomenna vapaana 10:00 ja 14:30 — kumpi käy?</div>
+        <div class="msg outgoing-good" data-lang="en">Hey! Women's cut €45, men's €35. Tomorrow free at 10:00 and 14:30 — which works?</div>
+        <div class="msg-time" data-lang="fi">✓ vastattu 23:14 — asiakas varasi 10:00</div>
+        <div class="msg-time" data-lang="en">✓ replied at 23:14 — customer booked 10:00</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="how" id="miten">
+  <div class="section-label" data-lang="fi">Näin se toimii</div>
+  <div class="section-label" data-lang="en">How it works</div>
+  <div class="section-title" data-lang="fi">Valmis kymmenessä minuutissa.</div>
+  <div class="section-title" data-lang="en">Ready in ten minutes.</div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <h3 data-lang="fi">Kerro yrityksestäsi</h3>
+      <h3 data-lang="en">Tell us about your business</h3>
+      <p data-lang="fi">Täytät lyhyen lomakkeen — mitä teet, hinnat, aukioloajat. Ei teknistä tietoa tarvita.</p>
+      <p data-lang="en">Fill in a short form — what you do, prices, opening hours. No technical knowledge needed.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <h3 data-lang="fi">Yhdistä kanavat</h3>
+      <h3 data-lang="en">Connect your channels</h3>
+      <p data-lang="fi">WhatsApp, sähköposti tai nettisivun chat. Sinne missä asiakkaasi jo kirjoittavat.</p>
+      <p data-lang="en">WhatsApp, email or website chat. Wherever your customers already write to you.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <h3 data-lang="fi">Kulova hoitaa loput</h3>
+      <h3 data-lang="en">Kulova handles the rest</h3>
+      <p data-lang="fi">Asiakas kirjoittaa. Kulova vastaa. Sinä näet aamulla mitä tapahtui. Tarvittaessa tulee ilmoitus suoraan sinulle.</p>
+      <p data-lang="en">Customer writes. Kulova replies. You see what happened in the morning. If something needs you, you get notified.</p>
+    </div>
+  </div>
+</section>
+
+<section class="features">
+  <div class="section-label" data-lang="fi">Ominaisuudet</div>
+  <div class="section-label" data-lang="en">Features</div>
+  <div class="section-title" data-lang="fi">Ei chatbot. Agentti joka ymmärtää.</div>
+  <div class="section-title" data-lang="en">Not a chatbot. An agent that understands.</div>
+
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">🌙</div>
+      <h3 data-lang="fi">Töissä kun nukut</h3>
+      <h3 data-lang="en">Working while you sleep</h3>
+      <p data-lang="fi">Kulova ei nukku, pidä taukoa eikä unohda vastata. Jokainen viesti saa vastauksen.</p>
+      <p data-lang="en">Kulova doesn't sleep, take breaks or forget to reply. Every message gets answered.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🇫🇮</div>
+      <h3 data-lang="fi">Täydellinen suomi</h3>
+      <h3 data-lang="en">Perfect Finnish</h3>
+      <p data-lang="fi">Kulova kirjoittaa suomea kuten suomalainen. Ei robottimaisuutta, ei outoja lauserakenteita.</p>
+      <p data-lang="en">Kulova writes like a human. No robotic phrases, no awkward sentences.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📱</div>
+      <h3 data-lang="fi">WhatsApp, sähköposti, chat</h3>
+      <h3 data-lang="en">WhatsApp, email, chat</h3>
+      <p data-lang="fi">WhatsApp, sähköposti tai nettisivun chat. Sinne missä asiakkaasi jo ovat.</p>
+      <p data-lang="en">WhatsApp, email or website chat. Wherever your customers already are.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🎯</div>
+      <h3 data-lang="fi">Vastaa juuri kuten sinä</h3>
+      <h3 data-lang="en">Replies exactly like you</h3>
+      <p data-lang="fi">Kerrot miten vastaat, mitä myyt ja millä hinnalla. Kulova hoitaa loput samalla tyylillä.</p>
+      <p data-lang="en">You tell it how you talk, what you sell, what you charge. Kulova handles the rest in your style.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔔</div>
+      <h3 data-lang="fi">Tärkeät viestit sinulle</h3>
+      <h3 data-lang="en">Important messages to you</h3>
+      <p data-lang="fi">Jos joku asia vaatii sinut — saat ilmoituksen. Muuten Kulova hoitaa.</p>
+      <p data-lang="en">If something needs you — you get notified. Otherwise Kulova handles it.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📊</div>
+      <h3 data-lang="fi">Yhteenveto joka aamu</h3>
+      <h3 data-lang="en">Summary every morning</h3>
+      <p data-lang="fi">Herätessä näet mitä yöllä tapahtui. Varaukset, kysymykset, yhteydenotot — yhdellä silmäyksellä.</p>
+      <p data-lang="en">Wake up and see what happened overnight. Bookings, questions, contacts — at a glance.</p>
+    </div>
+  </div>
+</section>
+
+<section class="pricing" id="hinnat">
+  <div class="section-label" data-lang="fi">Hinnoittelu</div>
+  <div class="section-label" data-lang="en">Pricing</div>
+  <div class="section-title" data-lang="fi">Yksi hinta. Ei yllätyksiä.</div>
+  <div class="section-title" data-lang="en">One price. No surprises.</div>
+
+  <div class="pricing-card">
+    <div class="pricing-badge" data-lang="fi">Kaikki sisältyy</div>
+    <div class="pricing-badge" data-lang="en">Everything included</div>
+    <div class="pricing-price"><sup>€</sup>49</div>
+    <div class="pricing-price-sub" data-lang="fi">per kuukausi · ei sitoutumista · peruuta milloin tahansa</div>
+    <div class="pricing-price-sub" data-lang="en">per month · no commitment · cancel anytime</div>
+
+    <ul class="pricing-features">
+      <li data-lang="fi">Rajaton määrä viestejä</li>
+      <li data-lang="en">Unlimited messages</li>
+      <li data-lang="fi">WhatsApp + sähköposti + chat</li>
+      <li data-lang="en">WhatsApp + email + chat</li>
+      <li data-lang="fi">Suomenkielinen AI</li>
+      <li data-lang="en">Finnish language AI</li>
+      <li data-lang="fi">Päivittäinen yhteenveto</li>
+      <li data-lang="en">Daily summary</li>
+      <li data-lang="fi">Käyttöönotto 10 minuutissa</li>
+      <li data-lang="en">Setup in 10 minutes</li>
+      <li data-lang="fi">Ei teknistä osaamista tarvita</li>
+      <li data-lang="en">No technical knowledge required</li>
+    </ul>
+
+    <a href="#early" class="btn-primary" style="width:100%; justify-content:center;" data-lang="fi">Varaa paikkasi — ensimmäinen kuukausi ilmaiseksi →</a>
+    <a href="#early" class="btn-primary" style="width:100%; justify-content:center;" data-lang="en">Reserve your spot — first month free →</a>
+  </div>
+</section>
+
+<section class="cta-section" id="early">
+  <div class="section-label" data-lang="fi">Tulossa pian</div>
+  <div class="section-label" data-lang="en">Coming soon</div>
+  <h2 data-lang="fi">Ole ensimmäisten joukossa.</h2>
+  <h2 data-lang="en">Be among the first.</h2>
+  <p data-lang="fi">Kulova julkaistaan kesällä 2026. Jätä sähköpostisi — ilmoitamme heti kun pääset mukaan. Ensimmäiset 100 käyttäjää saavat ensimmäisen kuukauden ilmaiseksi.</p>
+  <p data-lang="en">Kulova launches summer 2026. Leave your email — we'll notify you as soon as you can join. First 100 users get their first month free.</p>
+
+  <div class="early-form">
+    <input type="email" id="email-input" placeholder="sähköpostisi@yritys.fi" autocomplete="email">
+    <button class="btn-primary" onclick="handleSubmit()" data-lang="fi">Ilmoittaudu →</button>
+    <button class="btn-primary" onclick="handleSubmit()" data-lang="en">Join waitlist →</button>
+  </div>
+  <p class="form-note" data-lang="fi">Ei roskapostia. Ei myydä tietoja. Vain yksi viesti kun olemme valmiit.</p>
+  <p class="form-note" data-lang="en">No spam. No data selling. Just one message when we're ready.</p>
+  <p id="form-thanks" style="color:var(--accent);margin-top:1rem;display:none;" data-lang="fi">Kiitos! Olemme yhteydessä pian.</p>
+  <p id="form-thanks-en" style="color:var(--accent);margin-top:1rem;display:none;" data-lang="en">Thanks! We'll be in touch soon.</p>
+</section>
+
+<footer>
+  <div class="footer-logo">kulova<span>.com</span></div>
+  <p data-lang="fi">© 2026 Kulova. Tehty Suomessa.</p>
+  <p data-lang="en">© 2026 Kulova. Made in Finland.</p>
+</footer>
+
+<!-- KULOVA CHAT WIDGET -->
+<style>
+  #kulova-widget { position: fixed; bottom: 24px; right: 24px; z-index: 9999; font-family: var(--font-body, system-ui, sans-serif); }
+  #kulova-btn { width: 58px; height: 58px; border-radius: 50%; background: var(--accent, #c8f25a); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 24px rgba(0,0,0,0.25); transition: transform 0.2s, box-shadow 0.2s; }
+  #kulova-btn:hover { transform: scale(1.07); box-shadow: 0 6px 32px rgba(0,0,0,0.3); }
+  #kulova-box { position: absolute; bottom: 70px; right: 0; width: 330px; background: #fff; border-radius: 18px; box-shadow: 0 8px 48px rgba(0,0,0,0.18); overflow: hidden; display: none; flex-direction: column; animation: widgetIn 0.2s ease; }
+  @keyframes widgetIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+  #kulova-box.open { display: flex; }
+  #kulova-header { background: #0a0a08; padding: 16px 18px; display: flex; justify-content: space-between; align-items: center; }
+  #kulova-header-left { display: flex; align-items: center; gap: 10px; }
+  #kulova-avatar { width: 32px; height: 32px; background: var(--accent,#c8f25a); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; color: #0a0a08; }
+  #kulova-header-text { display: flex; flex-direction: column; }
+  #kulova-header-name { color: #f5f3ee; font-size: 13px; font-weight: 600; }
+  #kulova-header-status { color: #c8f25a; font-size: 11px; display: flex; align-items: center; gap: 4px; }
+  #kulova-header-status::before { content:''; width:6px; height:6px; border-radius:50%; background:#c8f25a; display:inline-block; }
+  #kulova-close { background: none; border: none; color: #6b6b63; cursor: pointer; font-size: 20px; line-height: 1; padding: 0; }
+  #kulova-messages { flex: 1; padding: 16px; overflow-y: auto; max-height: 320px; display: flex; flex-direction: column; gap: 10px; scroll-behavior: smooth; }
+  .k-msg { max-width: 82%; padding: 10px 14px; border-radius: 14px; font-size: 14px; line-height: 1.55; }
+  .k-msg.bot { background: #f5f3ee; color: #0a0a08; align-self: flex-start; border-bottom-left-radius: 4px; }
+  .k-msg.user { background: #0a0a08; color: #f5f3ee; align-self: flex-end; border-bottom-right-radius: 4px; }
+  .k-msg.typing { background: #f5f3ee; color: #9a9a90; font-style: italic; align-self: flex-start; }
+  #kulova-input-row { padding: 12px; border-top: 1px solid #f0eeea; display: flex; gap: 8px; background: #fff; }
+  #kulova-input { flex: 1; border: 1.5px solid #e8e6e1; border-radius: 100px; padding: 9px 16px; font-size: 14px; outline: none; font-family: inherit; background: #fafaf8; transition: border-color 0.2s; }
+  #kulova-input:focus { border-color: #c8f25a; }
+  #kulova-send { background: #c8f25a; border: none; border-radius: 100px; width: 38px; height: 38px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background 0.2s; }
+  #kulova-send:hover { background: #a8d43a; }
+  #kulova-send svg { width: 16px; height: 16px; }
+  #kulova-footer-bar { text-align: center; padding: 8px; font-size: 10px; color: #c0bdb8; border-top: 1px solid #f0eeea; }
+  #kulova-footer-bar a { color: #c0bdb8; text-decoration: none; }
+  #kulova-footer-bar a:hover { color: #9a9a90; }
+  @media (max-width: 480px) {
+    #kulova-box { width: calc(100vw - 32px); right: -8px; bottom: 72px; }
+  }
+</style>
+
+<div id="kulova-widget">
+  <div id="kulova-box">
+    <div id="kulova-header">
+      <div id="kulova-header-left">
+        <div id="kulova-avatar">K</div>
+        <div id="kulova-header-text">
+          <span id="kulova-header-name">Kulova</span>
+          <span id="kulova-header-status">Online</span>
+        </div>
+      </div>
+      <button id="kulova-close" onclick="toggleWidget()">×</button>
+    </div>
+    <div id="kulova-messages">
+      <div class="k-msg bot" id="kulova-welcome">Hei! 👋 Olen Kulova-demo. Kysy mitä vaan — näytän miten AI-asiakaspalvelu toimii.</div>
+    </div>
+    <div id="kulova-input-row">
+      <input id="kulova-input" type="text" placeholder="Kirjoita viesti..." autocomplete="off" />
+      <button id="kulova-send" onclick="kulovaSend()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0a0a08" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="22" y1="2" x2="11" y2="13"></line>
+          <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+        </svg>
+      </button>
+    </div>
+    <div id="kulova-footer-bar">Demo — <a href="https://kulova.com" target="_blank">kulova.com</a></div>
+  </div>
+  <button id="kulova-btn" onclick="toggleWidget()" title="Chat">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0a0a08" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+    </svg>
+  </button>
+</div>
+
+<script>
+const KULOVA_API = 'https://kulova-backend.vercel.app';
+const kulovaSession = Math.random().toString(36).slice(2);
+
+function toggleWidget() {
+  const box = document.getElementById('kulova-box');
+  box.classList.toggle('open');
+  if (box.classList.contains('open')) {
+    setTimeout(() => document.getElementById('kulova-input').focus(), 100);
+  }
+}
+
+function kulovaAddMsg(text, type) {
+  const msgs = document.getElementById('kulova-messages');
+  const div = document.createElement('div');
+  div.className = 'k-msg ' + type;
+  div.textContent = text;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+  return div;
+}
+
+async function kulovaSend() {
+  const input = document.getElementById('kulova-input');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  kulovaAddMsg(text, 'user');
+  const typing = kulovaAddMsg('Kirjoittaa...', 'typing');
+  try {
+    const res = await fetch(KULOVA_API + '/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: text,
+        sessionId: kulovaSession,
+        businessId: 'demo'
+      })
+    });
+    const data = await res.json();
+    typing.remove();
+    kulovaAddMsg(data.reply || 'Virhe — yritä uudelleen', 'bot');
+  } catch(e) {
+    typing.remove();
+    kulovaAddMsg('Virhe — yritä uudelleen hetken kuluttua', 'bot');
+  }
+}
+
+document.getElementById('kulova-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); kulovaSend(); }
+});
+</script>
+
+<script>
+function toggleMenu() {
+  const nav = document.getElementById('nav-links');
+  const ham = document.getElementById('hamburger');
+  nav.classList.toggle('open');
+  ham.classList.toggle('open');
+}
+
+function setLang(lang) {
+  document.body.className = lang === 'en' ? 'lang-en' : '';
+  document.querySelectorAll('.lang-btn').forEach(b => {
+    b.classList.toggle('active', b.textContent === lang.toUpperCase());
+  });
+  document.querySelectorAll('.nav-links a[data-lang]').forEach(a => {
+    a.style.display = (a.dataset.lang === lang) ? '' : 'none';
+  });
+}
+
+async function handleSubmit() {
+  const email = document.getElementById('email-input').value;
+  if (!email || !email.includes('@')) {
+    document.getElementById('email-input').focus();
+    return;
+  }
+
+  const btn = document.querySelector('.early-form .btn-primary');
+  if (btn) { btn.textContent = '...'; btn.style.opacity = '0.7'; }
+
+  try {
+    const res = await fetch('https://api.brevo.com/v3/contacts', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'api-key': 'BREVO_API_KEY_HERE'
+      },
+      body: JSON.stringify({
+        email: email,
+        listIds: [2],
+        updateEnabled: true,
+        attributes: { SOURCE: 'kulova.com waitlist' }
+      })
+    });
+
+    document.getElementById('email-input').value = '';
+    const isEn = document.body.classList.contains('lang-en');
+    document.getElementById('form-thanks').style.display = isEn ? 'none' : 'block';
+    document.getElementById('form-thanks-en').style.display = isEn ? 'block' : 'none';
+  } catch(e) {
+    document.getElementById('email-input').value = '';
+    const isEn = document.body.classList.contains('lang-en');
+    document.getElementById('form-thanks').style.display = isEn ? 'none' : 'block';
+    document.getElementById('form-thanks-en').style.display = isEn ? 'block' : 'none';
+  }
+
+  if (btn) { btn.style.opacity = '1'; }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.nav-links a[data-lang="en"]').forEach(a => a.style.display = 'none');
+});
+</script>
+</body>
+</html>
