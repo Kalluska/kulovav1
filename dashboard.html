@@ -600,7 +600,11 @@ async function sendTest() {
     const data = await res.json();
     document.getElementById(loadId)?.remove();
     const reply = data.reply || data.message || data.response || JSON.stringify(data);
-    chat.innerHTML += `<div style="background:rgba(200,242,90,0.08);border:1px solid rgba(200,242,90,0.15);padding:0.6rem 0.9rem;border-radius:10px;font-size:0.875rem;max-width:80%">${reply}</div>`;
+    const formatted = reply
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      .replace(/^#{1,3}\s+(.+)$/gm, '<strong>$1</strong>')
+      .replace(/\n/g, '<br>');
+    chat.innerHTML += `<div style="background:rgba(200,242,90,0.08);border:1px solid rgba(200,242,90,0.15);padding:0.6rem 0.9rem;border-radius:10px;font-size:0.875rem;max-width:80%">${formatted}</div>`;
   } catch(e) {
     document.getElementById(loadId)?.remove();
     chat.innerHTML += `<div style="color:#ff6b6b;font-size:0.8rem;padding:0.4rem">Virhe: ${e.message}</div>`;
