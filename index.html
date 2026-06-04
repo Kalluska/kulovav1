@@ -130,12 +130,12 @@
 
   h1 {
     font-family: var(--font-display);
-    font-size: clamp(3rem, 7vw, 6.5rem);
+    font-size: clamp(2rem, 4vw, 4rem);
     font-weight: 800;
-    line-height: 1.0;
+    line-height: 1.08;
     letter-spacing: -0.03em;
     margin-bottom: 2rem;
-    max-width: 14ch;
+    max-width: 18ch;
   }
 
   h1 em {
@@ -264,12 +264,12 @@
 
   .section-title {
     font-family: var(--font-display);
-    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-size: clamp(1.6rem, 3vw, 2.5rem);
     font-weight: 700;
     letter-spacing: -0.025em;
-    line-height: 1.1;
+    line-height: 1.15;
     margin-bottom: 4rem;
-    max-width: 20ch;
+    max-width: 22ch;
   }
 
   .steps {
@@ -542,10 +542,10 @@
 
   .cta-section h2 {
     font-family: var(--font-display);
-    font-size: clamp(2.5rem, 5vw, 5rem);
+    font-size: clamp(2rem, 4vw, 3.5rem);
     font-weight: 800;
     letter-spacing: -0.03em;
-    line-height: 1.05;
+    line-height: 1.08;
     margin-bottom: 1.5rem;
   }
 
@@ -980,7 +980,9 @@
   #kulova-footer-bar a { color: #c0bdb8; text-decoration: none; }
   #kulova-footer-bar a:hover { color: #9a9a90; }
   @media (max-width: 480px) {
-    #kulova-box { width: calc(100vw - 32px); right: -8px; bottom: 72px; }
+    #kulova-widget { bottom: 16px; right: 16px; }
+    #kulova-box { width: calc(100vw - 32px); right: 0; bottom: 66px; border-radius: 14px; }
+    #kulova-messages { max-height: 260px; }
   }
 </style>
 
@@ -1020,12 +1022,16 @@
 <script>
 const KULOVA_API = 'https://kulova-backend.vercel.app';
 const kulovaSession = Math.random().toString(36).slice(2);
+let kulovaOpen = false;
 
 function toggleWidget() {
+  kulovaOpen = !kulovaOpen;
   const box = document.getElementById('kulova-box');
-  box.classList.toggle('open');
-  if (box.classList.contains('open')) {
-    setTimeout(() => document.getElementById('kulova-input').focus(), 100);
+  if (kulovaOpen) {
+    box.classList.add('open');
+    setTimeout(() => document.getElementById('kulova-input').focus(), 150);
+  } else {
+    box.classList.remove('open');
   }
 }
 
@@ -1044,29 +1050,31 @@ async function kulovaSend() {
   const text = input.value.trim();
   if (!text) return;
   input.value = '';
+  input.disabled = true;
   kulovaAddMsg(text, 'user');
   const typing = kulovaAddMsg('Kirjoittaa...', 'typing');
   try {
     const res = await fetch(KULOVA_API + '/api/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        message: text,
-        sessionId: kulovaSession,
-        businessId: 'demo'
-      })
+      body: JSON.stringify({ message: text, sessionId: kulovaSession, businessId: 'demo' })
     });
     const data = await res.json();
     typing.remove();
-    kulovaAddMsg(data.reply || 'Virhe — yritä uudelleen', 'bot');
+    kulovaAddMsg(data.reply || 'Jokin meni pieleen — yritä uudelleen', 'bot');
   } catch(e) {
     typing.remove();
-    kulovaAddMsg('Virhe — yritä uudelleen hetken kuluttua', 'bot');
+    kulovaAddMsg('Yhteysvirhe — tarkista nettiyhteys', 'bot');
+  } finally {
+    input.disabled = false;
+    input.focus();
   }
 }
 
-document.getElementById('kulova-input').addEventListener('keydown', e => {
-  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); kulovaSend(); }
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('kulova-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); kulovaSend(); }
+  });
 });
 </script>
 
