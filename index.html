@@ -101,6 +101,7 @@
     max-width: 1100px;
     margin: 0 auto;
     position: relative;
+    overflow: hidden;
   }
 
   .hero-tag {
@@ -130,12 +131,13 @@
 
   h1 {
     font-family: var(--font-display);
-    font-size: clamp(2rem, 4vw, 4rem);
+    font-size: clamp(1.8rem, 3.5vw, 3.5rem);
     font-weight: 800;
-    line-height: 1.08;
+    line-height: 1.1;
     letter-spacing: -0.03em;
     margin-bottom: 2rem;
-    max-width: 18ch;
+    max-width: 22ch;
+    word-break: break-word;
   }
 
   h1 em {
@@ -321,8 +323,8 @@
 
   .features-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.25rem;
     margin-top: 4rem;
   }
 
@@ -330,8 +332,11 @@
     background: var(--gray-1);
     border: 1px solid var(--gray-2);
     border-radius: 16px;
-    padding: 2rem;
+    padding: 1.75rem;
     transition: border-color 0.2s;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
   }
 
   .feature-card:hover { border-color: var(--gray-3); }
@@ -680,13 +685,17 @@
     .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
     .hamburger.open span:nth-child(2) { opacity: 0; }
     .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
-    .hero { padding: 7rem 1.25rem 4rem; }
+    .hero { padding: 6rem 1.25rem 3rem; min-height: auto; }
+    h1 { font-size: clamp(1.6rem, 7vw, 2.5rem); }
     .numbers { padding: 3rem 1.25rem; }
     .number-item { border-right: none; border-bottom: 1px solid var(--gray-2); padding: 1.5rem 0; }
     .number-item:last-child { border-bottom: none; }
-    .how, .features, .pricing, .pain, .cta-section { padding: 4rem 1.25rem; }
+    .how, .features, .pricing, .pain, .cta-section { padding: 3rem 1.25rem; }
     .pain-grid { grid-template-columns: 1fr; }
+    .features-grid { grid-template-columns: 1fr; }
+    .steps { grid-template-columns: 1fr; }
     footer { flex-direction: column; gap: 1rem; text-align: center; }
+    .hero-sub { font-size: 1rem; }
   }
   .hamburger { display: none; }
 
@@ -854,11 +863,11 @@
       <p data-lang="en">Kulova doesn't sleep, take breaks or forget to reply. Every message gets answered.</p>
     </div>
     <div class="feature-card">
-      <div class="feature-icon">🇫🇮</div>
-      <h3 data-lang="fi">Täydellinen suomi</h3>
-      <h3 data-lang="en">Perfect Finnish</h3>
-      <p data-lang="fi">Kulova kirjoittaa suomea kuten suomalainen. Ei robottimaisuutta, ei outoja lauserakenteita.</p>
-      <p data-lang="en">Kulova writes like a human. No robotic phrases, no awkward sentences.</p>
+      <div class="feature-icon">💬</div>
+      <h3 data-lang="fi">Vastaa kuten sinä</h3>
+      <h3 data-lang="en">Sounds like you</h3>
+      <p data-lang="fi">Kerrot miten puhut asiakkaille. Kulova oppii sen ja kirjoittaa samalla tyylillä — ei robottimaisesti.</p>
+      <p data-lang="en">You tell it how you talk. Kulova learns your style and writes just like you — not like a robot.</p>
     </div>
     <div class="feature-card">
       <div class="feature-icon">📱</div>
@@ -866,13 +875,6 @@
       <h3 data-lang="en">WhatsApp, email, chat</h3>
       <p data-lang="fi">WhatsApp, sähköposti tai nettisivun chat. Sinne missä asiakkaasi jo ovat.</p>
       <p data-lang="en">WhatsApp, email or website chat. Wherever your customers already are.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">🎯</div>
-      <h3 data-lang="fi">Vastaa juuri kuten sinä</h3>
-      <h3 data-lang="en">Replies exactly like you</h3>
-      <p data-lang="fi">Kerrot miten vastaat, mitä myyt ja millä hinnalla. Kulova hoitaa loput samalla tyylillä.</p>
-      <p data-lang="en">You tell it how you talk, what you sell, what you charge. Kulova handles the rest in your style.</p>
     </div>
     <div class="feature-card">
       <div class="feature-icon">🔔</div>
