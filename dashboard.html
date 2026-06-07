@@ -377,11 +377,35 @@ body { background: var(--black); color: var(--white); font-family: 'DM Sans', sa
           </div>
           <div class="field-group">
             <label>Palvelut ja hinnat</label>
-            <textarea id="set-services"></textarea>
+            <textarea id="set-services" style="min-height:80px"></textarea>
           </div>
           <div class="field-group">
             <label>Aukioloajat</label>
-            <input type="text" id="set-hours" />
+            <input type="text" id="set-hours" placeholder="esim. Ma-Pe 9-17, La 10-14" />
+          </div>
+          <div class="field-group">
+            <label>Verkkosivusto</label>
+            <input type="text" id="set-website" placeholder="esim. https://yritys.fi" />
+          </div>
+        </div>
+        <div class="settings-card" style="margin-top:1.5rem">
+          <h3>Botin asetukset</h3>
+          <div class="field-group">
+            <label>Botin nimi</label>
+            <input type="text" id="set-botname" placeholder="esim. Asiakaspalvelu" />
+          </div>
+          <div class="field-group">
+            <label>Sävy ja tyyli</label>
+            <select id="set-tone" style="width:100%;background:var(--gray-2);border:1.5px solid var(--gray-3);color:var(--white);padding:0.85rem 1rem;border-radius:10px;font-size:0.95rem;font-family:'DM Sans',sans-serif;outline:none;">
+              <option value="ystävällinen ja ammattimainen">Ystävällinen ja ammattimainen</option>
+              <option value="rento ja helposti lähestyttävä">Rento ja helposti lähestyttävä</option>
+              <option value="virallinen ja asiallinen">Virallinen ja asiallinen</option>
+              <option value="innostunut ja energinen">Innostunut ja energinen</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label>Lisäohjeet botille</label>
+            <textarea id="set-instructions" style="min-height:100px" placeholder="esim. Älä koskaan lupaa alennuksia. Ohjaa puhelinasiat numeroon 040-123456. Älä keskustele kilpailijoista."></textarea>
           </div>
           <button class="btn-save" onclick="saveSettings()">Tallenna muutokset</button>
           <span id="save-status" style="margin-left:1rem;font-size:0.85rem;color:var(--accent);display:none">Tallennettu!</span>
@@ -488,6 +512,10 @@ async function login() {
     document.getElementById('set-name').value = biz.name || '';
     document.getElementById('set-services').value = biz.services || '';
     document.getElementById('set-hours').value = biz.hours || '';
+    document.getElementById('set-website').value = biz.website || '';
+    document.getElementById('set-botname').value = biz.bot_name || 'Asiakaspalvelu';
+    document.getElementById('set-tone').value = biz.bot_tone || 'ystävällinen ja ammattimainen';
+    document.getElementById('set-instructions').value = biz.bot_instructions || '';
 
     // Widget code
     const wc = `<script src="${API}/api/widget.js" data-business="${bid}"><\/script>`;
@@ -562,8 +590,12 @@ async function saveSettings() {
   const name = document.getElementById('set-name').value.trim();
   const services = document.getElementById('set-services').value.trim();
   const hours = document.getElementById('set-hours').value.trim();
+  const website = document.getElementById('set-website').value.trim();
+  const bot_name = document.getElementById('set-botname').value.trim();
+  const bot_tone = document.getElementById('set-tone').value;
+  const bot_instructions = document.getElementById('set-instructions').value.trim();
 
-  const ok = await sbPatch(`businesses?id=eq.${currentBid}`, { name, services, hours });
+  const ok = await sbPatch(`businesses?id=eq.${currentBid}`, { name, services, hours, website, bot_name, bot_tone, bot_instructions });
   if (ok) {
     currentBusiness.name = name;
     document.getElementById('sb-bizname').textContent = name;
