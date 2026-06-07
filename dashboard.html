@@ -421,7 +421,88 @@ body { background: var(--black); color: var(--white); font-family: 'DM Sans', sa
             Kopioi tämä koodi nettisivusi &lt;body&gt;-tagin loppuun. Chat-nappi ilmestyy oikeaan alakulmaan.
           </p>
           <div class="code-block" id="widget-code-block">—</div>
-          <button class="btn-copy" onclick="copyWidget()">Kopioi koodi</button>
+          <div style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-top:0.75rem;">
+            <button class="btn-copy" onclick="copyWidget()">Kopioi koodi</button>
+            <button onclick="document.getElementById('install-modal').style.display='flex'" style="background:var(--accent);color:var(--black);border:none;border-radius:10px;padding:0.75rem 1.25rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:0.875rem;">📋 Asennusohjeet</button>
+          </div>
+        </div>
+
+        <!-- INSTALL MODAL -->
+        <div id="install-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:1000;align-items:center;justify-content:center;padding:1rem;">
+          <div style="background:var(--gray-1);border:1px solid var(--gray-2);border-radius:20px;padding:2rem;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">
+              <h2 style="font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:700;">Asennusohjeet</h2>
+              <button onclick="document.getElementById('install-modal').style.display='none'" style="background:none;border:none;color:var(--gray-5);cursor:pointer;font-size:1.5rem;line-height:1;">×</button>
+            </div>
+
+            <!-- Tabs -->
+            <div style="display:flex;gap:0.5rem;margin-bottom:1.5rem;">
+              <button onclick="showTab('wp')" id="tab-wp" style="padding:0.5rem 1rem;border-radius:8px;border:1.5px solid var(--accent);background:var(--accent);color:var(--black);font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:0.85rem;">WordPress</button>
+              <button onclick="showTab('wix')" id="tab-wix" style="padding:0.5rem 1rem;border-radius:8px;border:1.5px solid var(--gray-3);background:transparent;color:var(--white);font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:0.85rem;">Wix</button>
+              <button onclick="showTab('muu')" id="tab-muu" style="padding:0.5rem 1rem;border-radius:8px;border:1.5px solid var(--gray-3);background:transparent;color:var(--white);font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:0.85rem;">Muu sivusto</button>
+            </div>
+
+            <!-- WordPress -->
+            <div id="tab-content-wp">
+              <div style="display:flex;flex-direction:column;gap:1rem;">
+                <div style="display:flex;gap:0.75rem;align-items:flex-start;">
+                  <div style="min-width:28px;height:28px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--black);font-size:0.85rem;">1</div>
+                  <p style="color:var(--white);font-size:0.9rem;line-height:1.6;padding-top:3px;">Kirjaudu WordPress-hallintapaneeliin ja mene <strong>Ulkoasu → Muokkaa teemaa</strong> tai asenna plugin <strong>Header Footer Code Manager</strong>.</p>
+                </div>
+                <div style="display:flex;gap:0.75rem;align-items:flex-start;">
+                  <div style="min-width:28px;height:28px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--black);font-size:0.85rem;">2</div>
+                  <p style="color:var(--white);font-size:0.9rem;line-height:1.6;padding-top:3px;">Etsi <strong>footer.php</strong>-tiedosto ja lisää koodi juuri ennen <code style="background:var(--gray-2);padding:2px 6px;border-radius:4px;">&lt;/body&gt;</code>-tagia.</p>
+                </div>
+                <div style="display:flex;gap:0.75rem;align-items:flex-start;">
+                  <div style="min-width:28px;height:28px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--black);font-size:0.85rem;">3</div>
+                  <p style="color:var(--white);font-size:0.9rem;line-height:1.6;padding-top:3px;">Kopioi alla oleva koodi ja liitä se sinne. Tallenna.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Wix -->
+            <div id="tab-content-wix" style="display:none;">
+              <div style="display:flex;flex-direction:column;gap:1rem;">
+                <div style="display:flex;gap:0.75rem;align-items:flex-start;">
+                  <div style="min-width:28px;height:28px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--black);font-size:0.85rem;">1</div>
+                  <p style="color:var(--white);font-size:0.9rem;line-height:1.6;padding-top:3px;">Avaa Wix Editor ja mene <strong>Asetukset → Mukautettu koodi</strong> (Settings → Custom Code).</p>
+                </div>
+                <div style="display:flex;gap:0.75rem;align-items:flex-start;">
+                  <div style="min-width:28px;height:28px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--black);font-size:0.85rem;">2</div>
+                  <p style="color:var(--white);font-size:0.9rem;line-height:1.6;padding-top:3px;">Klikkaa <strong>+ Lisää koodi</strong> ja valitse sijainti: <strong>Body - end</strong>.</p>
+                </div>
+                <div style="display:flex;gap:0.75rem;align-items:flex-start;">
+                  <div style="min-width:28px;height:28px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--black);font-size:0.85rem;">3</div>
+                  <p style="color:var(--white);font-size:0.9rem;line-height:1.6;padding-top:3px;">Liitä koodi kenttään ja valitse <strong>Kaikki sivut</strong>. Tallenna ja julkaise.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Muu -->
+            <div id="tab-content-muu" style="display:none;">
+              <div style="display:flex;flex-direction:column;gap:1rem;">
+                <div style="display:flex;gap:0.75rem;align-items:flex-start;">
+                  <div style="min-width:28px;height:28px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--black);font-size:0.85rem;">1</div>
+                  <p style="color:var(--white);font-size:0.9rem;line-height:1.6;padding-top:3px;">Avaa sivustosi HTML-tiedosto tekstieditorissa.</p>
+                </div>
+                <div style="display:flex;gap:0.75rem;align-items:flex-start;">
+                  <div style="min-width:28px;height:28px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--black);font-size:0.85rem;">2</div>
+                  <p style="color:var(--white);font-size:0.9rem;line-height:1.6;padding-top:3px;">Etsi <code style="background:var(--gray-2);padding:2px 6px;border-radius:4px;">&lt;/body&gt;</code> sivun lopusta. Lisää koodi juuri sen yläpuolelle.</p>
+                </div>
+                <div style="display:flex;gap:0.75rem;align-items:flex-start;">
+                  <div style="min-width:28px;height:28px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--black);font-size:0.85rem;">3</div>
+                  <p style="color:var(--white);font-size:0.9rem;line-height:1.6;padding-top:3px;">Tallenna tiedosto ja lataa se palvelimellesi.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Koodi -->
+            <div style="margin-top:1.5rem;">
+              <p style="color:var(--gray-5);font-size:0.8rem;margin-bottom:0.5rem;">Liitä tämä koodi sivullesi:</p>
+              <div class="code-block" id="modal-code-block" style="font-size:0.8rem;">—</div>
+              <button onclick="copyModalCode()" style="margin-top:0.75rem;background:var(--accent);color:var(--black);border:none;border-radius:10px;padding:0.75rem 1.25rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:0.875rem;width:100%;">Kopioi koodi</button>
+            </div>
+          </div>
         </div>
         <div class="settings-card" style="margin-top:1.5rem">
           <h3>Testaa botti</h3>
@@ -520,6 +601,8 @@ async function login() {
     // Widget code
     const wc = `<script src="${API}/api/widget.js" data-business="${bid}"><\/script>`;
     document.getElementById('widget-code-block').textContent = wc;
+    const mb = document.getElementById('modal-code-block');
+    if (mb) mb.textContent = wc;
 
     loadDashboard();
   } catch(e) {
@@ -642,6 +725,24 @@ async function sendTest() {
     chat.innerHTML += `<div style="color:#ff6b6b;font-size:0.8rem;padding:0.4rem">Virhe: ${e.message}</div>`;
   }
   chat.scrollTop = 9999;
+}
+
+function showTab(tab) {
+  ['wp','wix','muu'].forEach(t => {
+    document.getElementById('tab-content-' + t).style.display = t === tab ? 'block' : 'none';
+    const btn = document.getElementById('tab-' + t);
+    btn.style.background = t === tab ? 'var(--accent)' : 'transparent';
+    btn.style.color = t === tab ? 'var(--black)' : 'var(--white)';
+    btn.style.borderColor = t === tab ? 'var(--accent)' : 'var(--gray-3)';
+  });
+}
+
+function copyModalCode() {
+  const code = document.getElementById('modal-code-block').textContent;
+  navigator.clipboard.writeText(code);
+  const btn = event.currentTarget;
+  btn.textContent = 'Kopioitu!';
+  setTimeout(() => btn.textContent = 'Kopioi koodi', 2000);
 }
 
 function copyWidget() {
