@@ -410,6 +410,26 @@ body { background: var(--black); color: var(--white); font-family: 'DM Sans', sa
           <button class="btn-save" onclick="saveSettings()">Tallenna muutokset</button>
           <span id="save-status" style="margin-left:1rem;font-size:0.85rem;color:var(--accent);display:none">Tallennettu!</span>
         </div>
+        <div class="settings-card" style="margin-top:1.5rem">
+          <h3>Päivittäinen yhteenveto</h3>
+          <p style="color:var(--gray-5);font-size:0.875rem;margin-bottom:1rem;line-height:1.6;font-weight:300;">
+            Kulova lähettää sinulle sähköpostiin tiivistelmän edellisen päivän keskusteluista.
+          </p>
+          <div class="field-group" style="display:flex;align-items:center;gap:1rem;">
+            <label style="margin:0;min-width:120px;">Yhteenveto käytössä</label>
+            <input type="checkbox" id="set-digest" style="width:20px;height:20px;accent-color:var(--accent);cursor:pointer;" />
+          </div>
+          <div class="field-group" style="margin-top:1rem;">
+            <label>Lähetysaika</label>
+            <select id="set-digest-hour" style="width:100%;background:var(--gray-2);border:1.5px solid var(--gray-3);color:var(--white);padding:0.85rem 1rem;border-radius:10px;font-size:0.95rem;font-family:'DM Sans',sans-serif;outline:none;">
+              <option value="6">06:00</option>
+              <option value="7">07:00</option>
+              <option value="8" selected>08:00</option>
+              <option value="9">09:00</option>
+              <option value="10">10:00</option>
+            </select>
+          </div>
+        </div>
       </div>
 
       <!-- WIDGET -->
@@ -597,6 +617,8 @@ async function login() {
     document.getElementById('set-botname').value = biz.bot_name || 'Asiakaspalvelu';
     document.getElementById('set-tone').value = biz.bot_tone || 'ystävällinen ja ammattimainen';
     document.getElementById('set-instructions').value = biz.bot_instructions || '';
+    document.getElementById('set-digest').checked = biz.digest_enabled || false;
+    document.getElementById('set-digest-hour').value = biz.digest_hour || 8;
 
     // Widget code
     const wc = `<script src="${API}/api/widget.js" data-business="${bid}"><\/script>`;
@@ -677,8 +699,10 @@ async function saveSettings() {
   const bot_name = document.getElementById('set-botname').value.trim();
   const bot_tone = document.getElementById('set-tone').value;
   const bot_instructions = document.getElementById('set-instructions').value.trim();
+  const digest_enabled = document.getElementById('set-digest').checked;
+  const digest_hour = parseInt(document.getElementById('set-digest-hour').value);
 
-  const ok = await sbPatch(`businesses?id=eq.${currentBid}`, { name, services, hours, website, bot_name, bot_tone, bot_instructions });
+  const ok = await sbPatch(`businesses?id=eq.${currentBid}`, { name, services, hours, website, bot_name, bot_tone, bot_instructions, digest_enabled, digest_hour });
   if (ok) {
     currentBusiness.name = name;
     document.getElementById('sb-bizname').textContent = name;
