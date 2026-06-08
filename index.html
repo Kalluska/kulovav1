@@ -1094,11 +1094,12 @@ function toggleMenu() {
 
 function setLang(lang) {
   document.body.className = lang === 'en' ? 'lang-en' : '';
+  localStorage.setItem('kulova-lang', lang);
   document.querySelectorAll('.lang-btn').forEach(b => {
     b.classList.toggle('active', b.textContent === lang.toUpperCase());
   });
-  document.querySelectorAll('.nav-links a[data-lang]').forEach(a => {
-    a.style.display = (a.dataset.lang === lang) ? '' : 'none';
+  document.querySelectorAll('[data-lang]').forEach(el => {
+    el.style.display = (el.dataset.lang === lang) ? '' : 'none';
   });
 }
 
