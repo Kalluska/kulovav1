@@ -387,6 +387,10 @@ body { background: var(--black); color: var(--white); font-family: 'DM Sans', sa
             <label>Verkkosivusto</label>
             <input type="text" id="set-website" placeholder="esim. https://yritys.fi" />
           </div>
+          <div class="field-group">
+            <label>Varauslinkki</label>
+            <input type="text" id="set-booking" placeholder="esim. https://yritys.fi/varaa tai https://calendly.com/sinä" />
+          </div>
         </div>
         <div class="settings-card" style="margin-top:1.5rem">
           <h3>Botin asetukset</h3>
@@ -614,6 +618,7 @@ async function login() {
     document.getElementById('set-services').value = biz.services || '';
     document.getElementById('set-hours').value = biz.hours || '';
     document.getElementById('set-website').value = biz.website || '';
+    document.getElementById('set-booking').value = biz.booking_url || '';
     document.getElementById('set-botname').value = biz.bot_name || 'Asiakaspalvelu';
     document.getElementById('set-tone').value = biz.bot_tone || 'ystävällinen ja ammattimainen';
     document.getElementById('set-instructions').value = biz.bot_instructions || '';
@@ -696,13 +701,14 @@ async function saveSettings() {
   const services = document.getElementById('set-services').value.trim();
   const hours = document.getElementById('set-hours').value.trim();
   const website = document.getElementById('set-website').value.trim();
+  const booking_url = document.getElementById('set-booking').value.trim();
   const bot_name = document.getElementById('set-botname').value.trim();
   const bot_tone = document.getElementById('set-tone').value;
   const bot_instructions = document.getElementById('set-instructions').value.trim();
   const digest_enabled = document.getElementById('set-digest').checked;
   const digest_hour = parseInt(document.getElementById('set-digest-hour').value);
 
-  const ok = await sbPatch(`businesses?id=eq.${currentBid}`, { name, services, hours, website, bot_name, bot_tone, bot_instructions, digest_enabled, digest_hour });
+  const ok = await sbPatch(`businesses?id=eq.${currentBid}`, { name, services, hours, website, booking_url, bot_name, bot_tone, bot_instructions, digest_enabled, digest_hour });
   if (ok) {
     currentBusiness.name = name;
     document.getElementById('sb-bizname').textContent = name;
