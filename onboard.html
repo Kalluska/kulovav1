@@ -196,6 +196,10 @@ select option { background: var(--gray-1); }
 
 <nav>
   <a href="/" class="logo">kulova<span>.</span></a>
+  <div style="display:flex;gap:0.5rem;">
+    <button onclick="setLang('fi')" id="lang-fi" style="background:var(--accent);color:var(--black);border:none;border-radius:6px;padding:0.3rem 0.7rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:0.85rem;">FI</button>
+    <button onclick="setLang('en')" id="lang-en" style="background:transparent;color:var(--white);border:1px solid var(--gray-3);border-radius:6px;padding:0.3rem 0.7rem;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:0.85rem;">EN</button>
+  </div>
 </nav>
 
 <div class="container">
@@ -401,6 +405,49 @@ document.addEventListener('keydown', e => {
     if (activeStep?.id === 'step-0') nextStep(0);
     if (activeStep?.id === 'step-1') nextStep(1);
   }
+});
+
+function setLang(lang) {
+  localStorage.setItem('kulova-lang', lang);
+  document.getElementById('lang-fi').style.background = lang === 'fi' ? 'var(--accent)' : 'transparent';
+  document.getElementById('lang-fi').style.color = lang === 'fi' ? 'var(--black)' : 'var(--white)';
+  document.getElementById('lang-en').style.background = lang === 'en' ? 'var(--accent)' : 'transparent';
+  document.getElementById('lang-en').style.color = lang === 'en' ? 'var(--black)' : 'var(--white)';
+}
+
+async function fetchFromUrl() {
+  const url = document.getElementById('fetch-url').value.trim();
+  if (!url) return;
+  const btn = document.getElementById('fetch-btn');
+  const status = document.getElementById('fetch-status');
+  btn.textContent = 'Haetaan...';
+  btn.disabled = true;
+  status.style.display = 'block';
+  status.textContent = 'Haetaan tietoja sivustolta...';
+  try {
+    const res = await fetch('https://kulova-backend.vercel.app/api/scrape', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ url })
+    });
+    const data = await res.json();
+    if (data.name) document.getElementById('biz-name').value = data.name;
+    if (data.services) document.getElementById('biz-services').value = data.services;
+    if (data.hours) document.getElementById('biz-hours').value = data.hours;
+    status.textContent = '✓ Tiedot haettu! Tarkista ja täydennä tarvittaessa.';
+    status.style.color = 'var(--accent)';
+  } catch(e) {
+    status.textContent = 'Haku epäonnistui — täytä tiedot manuaalisesti.';
+    status.style.color = '#ff6b6b';
+  }
+  btn.textContent = 'Hae tiedot';
+  btn.disabled = false;
+}
+
+// Lataa tallennettu kieli
+document.addEventListener('DOMContentLoaded', () => {
+  const savedLang = localStorage.getItem('kulova-lang') || 'fi';
+  setLang(savedLang);
 });
 </script>
 </body>
