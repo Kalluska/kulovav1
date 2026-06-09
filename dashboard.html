@@ -281,13 +281,23 @@ body { background: var(--black); color: var(--white); font-family: 'DM Sans', sa
 <div id="auth-screen">
   <div class="auth-box">
     <div class="auth-logo">kulova<span>.</span></div>
-    <h2>Kirjaudu sisään</h2>
-    <p>Syötä sähköpostisi ja yritystunnuksesi.</p>
-    <input type="email" id="auth-email" placeholder="sinä@yritys.fi" autocomplete="email" />
-    <input type="text" id="auth-bid" placeholder="Yritystunnus (biz_...)" autocomplete="off" />
-    <button class="btn-auth" onclick="login()">Kirjaudu →</button>
-    <div class="auth-error" id="auth-error">Sähköposti tai tunnus ei täsmää.</div>
-    <p style="margin-top:1rem;font-size:0.75rem;color:var(--gray-4);">Löydät yritystunnuksen rekisteröitymisen jälkeen saamastasi sähköpostista.</p>
+    <!-- Vaihe 1: Sähköposti -->
+    <div id="auth-step-1">
+      <h2>Kirjaudu sisään</h2>
+      <p>Syötä sähköpostisi — lähetämme kirjautumiskoodin.</p>
+      <input type="email" id="auth-email" placeholder="sinä@yritys.fi" autocomplete="email" onkeydown="if(event.key==='Enter')sendPin()" />
+      <button class="btn-auth" onclick="sendPin()">Lähetä koodi →</button>
+      <div class="auth-error" id="auth-error">Sähköpostia ei löydy.</div>
+    </div>
+    <!-- Vaihe 2: PIN-koodi -->
+    <div id="auth-step-2" style="display:none">
+      <h2>Tarkista sähköpostisi</h2>
+      <p id="auth-pin-msg">Syötä 6-numeroinen koodi jonka lähetimme osoitteeseen.</p>
+      <input type="text" id="auth-pin" placeholder="123456" maxlength="6" autocomplete="one-time-code" onkeydown="if(event.key==='Enter')verifyPin()" style="letter-spacing:0.3em;text-align:center;font-size:1.4rem;" />
+      <button class="btn-auth" onclick="verifyPin()">Kirjaudu →</button>
+      <div class="auth-error" id="auth-pin-error">Väärä tai vanhentunut koodi.</div>
+      <p style="margin-top:1rem;font-size:0.8rem;color:var(--gray-4);text-align:center;cursor:pointer;" onclick="backToEmail()">← Vaihda sähköpostiosoite</p>
+    </div>
   </div>
 </div>
 
@@ -585,10 +595,74 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-async function login() {
-  const email = document.getElementById('auth-email').value.trim().toLowerCase();
-  const bid = document.getElementById('auth-bid').value.trim();
+function backToEmail() {
+  document.getElementById('auth-step-1').style.display = 'block';
+  document.getElementById('auth-step-2').style.display = 'none';
+  document.getElementById('auth-error').style.display = 'none';
+  document.getElementById('auth-pin-error').style.display = 'none';
+}
 
+async function sendPin() {
+  const email = document.getElementById('auth-email').value.trim().toLowerCase();
+  if (!email) {
+    document.getElementById('auth-error').style.display = 'block';
+    return;
+  }
+  const btn = document.querySelector('#auth-step-1 .btn-auth');
+  btn.textContent = 'Lähetetään...';
+  btn.disabled = true;
+  try {
+    const res = await fetch('https://kulova-backend.vercel.app/api/auth', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'send', email })
+    });
+    const data = await res.json();
+    if (data.success) {
+      document.getElementById('auth-step-1').style.display = 'none';
+      document.getElementById('auth-step-2').style.display = 'block';
+      document.getElementById('auth-pin-msg').textContent = 'Syötä 6-numeroinen koodi jonka lähetimme osoitteeseen ' + email;
+      document.getElementById('auth-pin').focus();
+    } else {
+      document.getElementById('auth-error').style.display = 'block';
+    }
+  } catch(e) {
+    document.getElementById('auth-error').style.display = 'block';
+  }
+  btn.textContent = 'Lähetä koodi →';
+  btn.disabled = false;
+}
+
+async function verifyPin() {
+  const email = document.getElementById('auth-email').value.trim().toLowerCase();
+  const code = document.getElementById('auth-pin').value.trim();
+  if (!code || code.length !== 6) {
+    document.getElementById('auth-pin-error').style.display = 'block';
+    return;
+  }
+  const btn = document.querySelector('#auth-step-2 .btn-auth');
+  btn.textContent = 'Tarkistetaan...';
+  btn.disabled = true;
+  try {
+    const res = await fetch('https://kulova-backend.vercel.app/api/auth', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'verify', email, code })
+    });
+    const data = await res.json();
+    if (data.success) {
+      await loginWithId(email, data.businessId);
+    } else {
+      document.getElementById('auth-pin-error').style.display = 'block';
+    }
+  } catch(e) {
+    document.getElementById('auth-pin-error').style.display = 'block';
+  }
+  btn.textContent = 'Kirjaudu →';
+  btn.disabled = false;
+}
+
+async function loginWithId(email, bid) {
   if (!email || !bid) {
     document.getElementById('auth-error').style.display = 'block';
     return;
