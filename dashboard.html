@@ -444,6 +444,12 @@ body { background: var(--black); color: var(--white); font-family: 'DM Sans', sa
             </select>
           </div>
         </div>
+        <div class="settings-card" style="margin-top:1.5rem">
+          <h3>Tilaus</h3>
+          <p style="color:var(--gray-5);font-size:0.875rem;margin-bottom:1rem;line-height:1.6;font-weight:300;">Hallitse tilaustasi, vaihda maksukorttia tai peruuta tilaus Stripen turvallisessa portaalissa.</p>
+          <button class="btn-save" onclick="openPortal()" id="portal-btn">Hallitse tilausta</button>
+          <span id="portal-status" style="margin-left:1rem;font-size:0.85rem;color:var(--gray-5);display:none">Avataan...</span>
+        </div>
       </div>
 
       <!-- WIDGET -->
@@ -767,6 +773,26 @@ async function loadMessages(convId, identifier, lastTime) {
     document.getElementById('messages-list').scrollTop = 9999;
   } catch(e) {
     document.getElementById('messages-list').innerHTML = '<div class="empty-state">Virhe ladatessa viestejä.</div>';
+  }
+}
+
+async function openPortal() {
+  const status = document.getElementById('portal-status');
+  status.style.display = 'inline';
+  status.style.color = 'var(--gray-5)';
+  status.textContent = 'Avataan...';
+  try {
+    const r = await fetch('https://kulova-backend.vercel.app/api/portal', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ businessId: currentBid })
+    });
+    const data = await r.json();
+    if (data.url) { window.location.href = data.url; }
+    else { status.textContent = data.error || 'Virhe. Yrita uudelleen.'; status.style.color = '#e05555'; }
+  } catch (e) {
+    status.textContent = 'Yhteysvirhe. Yrita uudelleen.';
+    status.style.color = '#e05555';
   }
 }
 
