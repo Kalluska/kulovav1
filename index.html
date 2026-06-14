@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Kulova — Vastaa asiakkaillesi kun et pysty itse</title>
-<meta name="description" content="Kulova vastaa asiakkaillesi kun et pysty itse. AI-agentti joka hoitaa viestisi 24/7 — WhatsApp, sähköposti, nettisivu.">
+<meta name="description" content="Kulova vastaa asiakkaillesi kun et pysty itse. AI-agentti joka hoitaa nettisivusi asiakaschatin 24/7, suomeksi.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
@@ -772,9 +772,10 @@
       <div class="number-label" data-lang="en">Always available</div>
     </div>
     <div class="number-item">
-      <div class="number-value">&lt;30s</div>
-      <div class="number-label" data-lang="fi">Vastausaika keskimäärin</div>
-      <div class="number-label" data-lang="en">Average response time</div>
+      <div class="number-value" data-lang="fi">Heti</div>
+      <div class="number-value" data-lang="en">Instant</div>
+      <div class="number-label" data-lang="fi">Vastaa sekunneissa</div>
+      <div class="number-label" data-lang="en">Replies in seconds</div>
     </div>
     <div class="number-item">
       <div class="number-value">10min</div>
@@ -837,10 +838,10 @@
     </div>
     <div class="step">
       <div class="step-num">02</div>
-      <h3 data-lang="fi">Yhdistä kanavat</h3>
-      <h3 data-lang="en">Connect your channels</h3>
-      <p data-lang="fi">WhatsApp, sähköposti tai nettisivun chat. Sinne missä asiakkaasi jo kirjoittavat.</p>
-      <p data-lang="en">WhatsApp, email or website chat. Wherever your customers already write to you.</p>
+      <h3 data-lang="fi">Asenna sivuillesi</h3>
+      <h3 data-lang="en">Add it to your site</h3>
+      <p data-lang="fi">Kopioit yhden koodinpätkän nettisivuillesi. Chat ilmestyy sinne missä asiakkaasi jo ovat.</p>
+      <p data-lang="en">Copy one snippet of code to your website. The chat appears where your customers already are.</p>
     </div>
     <div class="step">
       <div class="step-num">03</div>
@@ -875,10 +876,10 @@
     </div>
     <div class="feature-card">
       <div class="feature-icon">📱</div>
-      <h3 data-lang="fi">WhatsApp, sähköposti, chat</h3>
-      <h3 data-lang="en">WhatsApp, email, chat</h3>
-      <p data-lang="fi">WhatsApp, sähköposti tai nettisivun chat. Sinne missä asiakkaasi jo ovat.</p>
-      <p data-lang="en">WhatsApp, email or website chat. Wherever your customers already are.</p>
+      <h3 data-lang="fi">Oppii yrityksesi tiedot</h3>
+      <h3 data-lang="en">Learns your business</h3>
+      <p data-lang="fi">Kerrot palvelut, hinnat ja aukioloajat. Kulova vastaa niiden mukaan — tarkasti, ei arvauksia.</p>
+      <p data-lang="en">You give it your services, prices and hours. Kulova answers accordingly — accurately, no guessing.</p>
     </div>
     <div class="feature-card">
       <div class="feature-icon">🔔</div>
@@ -913,8 +914,8 @@
     <ul class="pricing-features">
       <li data-lang="fi">Rajaton määrä viestejä</li>
       <li data-lang="en">Unlimited messages</li>
-      <li data-lang="fi">WhatsApp + sähköposti + chat</li>
-      <li data-lang="en">WhatsApp + email + chat</li>
+      <li data-lang="fi">Nettisivuchat suomeksi</li>
+      <li data-lang="en">Finnish website chat</li>
       <li data-lang="fi">Suomenkielinen AI</li>
       <li data-lang="en">Finnish language AI</li>
       <li data-lang="fi">Reaaliaikainen hallintapaneeli</li>
@@ -933,20 +934,16 @@
 <section class="cta-section" id="early">
   <div class="section-label" data-lang="fi">Saatavilla nyt</div>
   <div class="section-label" data-lang="en">Available now</div>
-  <h2 data-lang="fi">Ole ensimmäisten joukossa.</h2>
-  <h2 data-lang="en">Be among the first.</h2>
-  <p data-lang="fi">Kulova on nyt saatavilla. Jätä sähköpostisi — otamme yhteyttä ja pääset mukaan. Ensimmäiset 100 käyttäjää saavat ensimmäisen kuukauden ilmaiseksi.</p>
-  <p data-lang="en">Kulova is now available. Leave your email — we'll get in touch and get you started. First 100 users get their first month free.</p>
-
+  <h2 data-lang="fi">Aloita tänään.</h2>
+  <h2 data-lang="en">Start today.</h2>
+  <p data-lang="fi">Kokeile Kulovaa 14 päivää ilmaiseksi. Asennat itse 10 minuutissa — ei myyntipuhelua, ei sitoutumista.</p>
+  <p data-lang="en">Try Kulova free for 14 days. Set it up yourself in 10 minutes — no sales call, no commitment.</p>
   <div class="early-form">
-    <input type="email" id="email-input" placeholder="sähköpostisi@yritys.fi" autocomplete="email">
-    <button class="btn-primary" onclick="handleSubmit()" data-lang="fi">Ilmoittaudu →</button>
-    <button class="btn-primary" onclick="handleSubmit()" data-lang="en">Join waitlist →</button>
+    <a href="/onboard" class="btn-primary" data-lang="fi">Aloita ilmainen kokeilu →</a>
+    <a href="/onboard" class="btn-primary" data-lang="en">Start free trial →</a>
   </div>
-  <p class="form-note" data-lang="fi">Ei roskapostia. Ei myydä tietoja. Vain yksi viesti kun olemme valmiit.</p>
-  <p class="form-note" data-lang="en">No spam. No data selling. Just one message when we're ready.</p>
-  <p id="form-thanks" style="color:var(--accent);margin-top:1rem;display:none;" data-lang="fi">Kiitos! Olemme yhteydessä pian.</p>
-  <p id="form-thanks-en" style="color:var(--accent);margin-top:1rem;display:none;" data-lang="en">Thanks! We'll be in touch soon.</p>
+  <p class="form-note" data-lang="fi">Ei roskapostia. Ei myydä tietoja.</p>
+  <p class="form-note" data-lang="en">No spam. No data selling.</p>
 </section>
 
 <footer>
@@ -1111,44 +1108,7 @@ function setLang(lang) {
   });
 }
 
-async function handleSubmit() {
-  const email = document.getElementById('email-input').value;
-  if (!email || !email.includes('@')) {
-    document.getElementById('email-input').focus();
-    return;
-  }
 
-  const btn = document.querySelector('.early-form .btn-primary');
-  if (btn) { btn.textContent = '...'; btn.style.opacity = '0.7'; }
-
-  try {
-    const res = await fetch('https://api.brevo.com/v3/contacts', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'api-key': 'BREVO_API_KEY_HERE'
-      },
-      body: JSON.stringify({
-        email: email,
-        listIds: [2],
-        updateEnabled: true,
-        attributes: { SOURCE: 'kulova.com waitlist' }
-      })
-    });
-
-    document.getElementById('email-input').value = '';
-    const isEn = document.body.classList.contains('lang-en');
-    document.getElementById('form-thanks').style.display = isEn ? 'none' : 'block';
-    document.getElementById('form-thanks-en').style.display = isEn ? 'block' : 'none';
-  } catch(e) {
-    document.getElementById('email-input').value = '';
-    const isEn = document.body.classList.contains('lang-en');
-    document.getElementById('form-thanks').style.display = isEn ? 'none' : 'block';
-    document.getElementById('form-thanks-en').style.display = isEn ? 'block' : 'none';
-  }
-
-  if (btn) { btn.style.opacity = '1'; }
-}
 
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.nav-links a[data-lang="en"]').forEach(a => a.style.display = 'none');
