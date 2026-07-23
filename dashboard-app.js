@@ -303,29 +303,17 @@ async function saveSettings() {
 }
 
 // ---------- BILLING PORTAL ----------
-// HUOM: /api/portal ottaa yhä businessId:n suoraan pyynnön bodystä eikä ole
-// vielä token-suojattu — tunnettu, erikseen raportoitu puute, ei korjattu tässä.
 
 async function openPortal() {
   const status = document.getElementById('portal-status');
   status.style.display = 'inline';
   status.style.color = 'var(--gray-5)';
   status.textContent = 'Avataan...';
-  try {
-    const r = await fetch(`${API}/api/portal`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ businessId: currentBusinessId })
-    });
-    const data = await r.json();
-    if (data.url) {
-      window.location.href = data.url;
-    } else {
-      status.textContent = data.error || 'Virhe. Yritä uudelleen.';
-      status.style.color = '#e05555';
-    }
-  } catch (e) {
-    status.textContent = 'Yhteysvirhe. Yritä uudelleen.';
+  const { ok, data } = await apiFetch('/api/portal', { method: 'POST' });
+  if (ok && data.url) {
+    window.location.href = data.url;
+  } else {
+    status.textContent = data.error || 'Virhe. Yritä uudelleen.';
     status.style.color = '#e05555';
   }
 }
