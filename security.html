@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kulova — Security</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #0a0a08; color: #f5f3ee; font-family: 'DM Sans', sans-serif; min-height: 100vh; }
+nav { padding: 1.25rem 2.5rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #2a2a26; }
+.logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.25rem; color: #f5f3ee; text-decoration: none; }
+.logo span { color: #c8f25a; }
+.content { max-width: 720px; margin: 0 auto; padding: 4rem 2rem; }
+h1 { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem; }
+.updated { color: #6b6b63; font-size: 0.875rem; margin-bottom: 3rem; }
+h2 { font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 700; margin: 2rem 0 0.75rem; }
+p { color: #9a9a90; line-height: 1.7; margin-bottom: 1rem; font-weight: 300; }
+ul, ol { margin: 0 0 1rem 1.25rem; }
+li { color: #9a9a90; line-height: 1.7; margin-bottom: 0.5rem; font-weight: 300; }
+strong { color: #f5f3ee; font-weight: 500; }
+a { color: #c8f25a; }
+hr { border: none; border-top: 1px solid #1a1a17; margin: 2rem 0; }
+.example-box { background: #14140f; border: 1px solid #2a2a26; border-radius: 12px; padding: 1.5rem; margin: 1rem 0 1.5rem; }
+.example-box h3 { font-family: 'DM Sans', sans-serif; font-size: 0.95rem; font-weight: 500; color: #f5f3ee; margin-bottom: 0.75rem; }
+footer { text-align: center; padding: 2rem; color: #3d3d38; font-size: 0.875rem; border-top: 1px solid #1a1a17; margin-top: 4rem; }
+footer a { color: #6b6b63; }
+</style>
+</head>
+<body>
+<nav>
+  <a href="/" class="logo">kulova<span>.</span></a>
+  <a href="/dashboard" style="color:#f5f3ee;text-decoration:none;font-size:0.9rem;opacity:0.7;">Log in</a>
+</nav>
+<div class="content">
+  <h1>Security &amp; Incident Response</h1>
+  <p class="updated">Last updated: 27 July 2026</p>
+
+  <p>Kulova is built and operated by a single founder in Finland. This page describes, honestly and without overstating our size, how we protect data and how we respond if something goes wrong. See also our <a href="/privacy">Privacy Policy</a>.</p>
+
+  <hr>
+
+  <h2>1. How we protect data day to day</h2>
+  <ul>
+    <li>All data in transit is encrypted (HTTPS/TLS).</li>
+    <li>Our database (Supabase, EU region) has Row Level Security enabled with a deny-all policy on every table containing merchant or customer data — no client can read or write it directly. Only our backend, using a private service credential, can access it, scoped to the requesting merchant's own store.</li>
+    <li>Production secrets (API keys, database credentials) are stored only in our hosting provider's encrypted environment variable store, never committed to source control.</li>
+    <li>Internal service-to-service calls (e.g. between our backend and the order-lookup endpoint) are authenticated with a private shared secret and are not publicly reachable.</li>
+    <li>Sensitive lookups (like order status) are rate-limited and require an ownership check before returning any data.</li>
+    <li>Every access attempt to protected data fields is logged with a timestamp and session/store identifier, so we can reconstruct what happened during an investigation.</li>
+  </ul>
+
+  <h2>2. Incident response process</h2>
+  <p>As a one-person team, we don't run a 24/7 security operations center — but we do monitor our infrastructure (hosting and database provider dashboards, error logs) regularly, and we act immediately once an issue is identified. Our process:</p>
+  <ol>
+    <li><strong>Detection.</strong> An issue is identified — through routine review, an automated alert, a bug report, or a responsible disclosure from a third party.</li>
+    <li><strong>Containment.</strong> Immediate action to stop ongoing exposure: rotating any credential that may be compromised, disabling the affected access path, or taking the affected feature offline if necessary.</li>
+    <li><strong>Assessment.</strong> Determine what happened, what data (if any) could have been accessed, and — critically — whether there is actual evidence of unauthorized access, versus a vulnerability that is closed before being exploited. This determines whether GDPR's breach-notification threshold is met.</li>
+    <li><strong>Notification.</strong> If the assessment concludes that a personal data breach occurred (confirmed unauthorized access, disclosure, or loss of personal data) under GDPR Article 33, we notify the relevant supervisory authority within 72 hours of becoming aware, and notify affected individuals without undue delay where the breach is likely to result in a high risk to their rights and freedoms. If no evidence of actual unauthorized access is found, formal breach notification is not triggered, but we still remediate and document the issue.</li>
+    <li><strong>Remediation.</strong> Fix the root cause, not just the symptom — including related issues discovered during the investigation.</li>
+    <li><strong>Post-incident review.</strong> Document what happened and what changed, so the same class of issue doesn't recur.</li>
+  </ol>
+
+  <h2>3. Worked example: July 2026 credential rotation</h2>
+  <div class="example-box">
+    <h3>What happened</h3>
+    <p>During a routine internal security review, we found a Supabase API key hardcoded in a public-facing page's source code, combined with overly permissive database access policies on several tables. This combination meant the key, if found, could have been used to read or modify stored data directly, bypassing our backend.</p>
+    <h3>What we did, and when</h3>
+    <ul>
+      <li><strong>Same day:</strong> disabled the exposed key and revoked its underlying signing secret, then migrated to newly issued credentials.</li>
+      <li><strong>Same day:</strong> assessed for evidence of actual unauthorized access. None was found — the exposure was closed before we found any indication it had been exploited.</li>
+      <li><strong>Following days:</strong> rewrote the affected page to route all data access through our authenticated backend instead of talking to the database directly, tightened database access policies table by table (testing after each change), and added additional request-authentication and rate-limiting safeguards.</li>
+    </ul>
+    <h3>Why this wasn't formally reported as a breach</h3>
+    <p>Per step 4 of our process above, GDPR's 72-hour notification requirement applies to confirmed personal data breaches. Because we found no evidence of actual unauthorized access before the exposure was closed, this did not meet that threshold. We're including it here anyway, in the interest of transparency, as a real example of this process being followed.</p>
+  </div>
+
+  <h2>4. Reporting a security issue</h2>
+  <p>If you believe you've found a security vulnerability in Kulova, please email <a href="mailto:hello@kulova.com">hello@kulova.com</a> with details. We take reports seriously and will respond promptly. Please give us a reasonable time to investigate and fix an issue before disclosing it publicly.</p>
+
+  <h2>5. Changes to this page</h2>
+  <p>We'll update this page as our practices evolve. The "Last updated" date above reflects the most recent revision.</p>
+</div>
+<footer>© 2026 Kulova. Made in Finland. · <a href="/privacy">Privacy Policy</a> · <a href="/support">Support</a></footer>
+</body>
+</html>
