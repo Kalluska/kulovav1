@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fi">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kulova — Tietosuojaseloste</title>
+<title>Kulova — Privacy Policy</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
 <style>
@@ -17,51 +17,108 @@ h1 { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800; margin-
 .updated { color: #6b6b63; font-size: 0.875rem; margin-bottom: 3rem; }
 h2 { font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 700; margin: 2rem 0 0.75rem; }
 p { color: #9a9a90; line-height: 1.7; margin-bottom: 1rem; font-weight: 300; }
+ul { margin: 0 0 1rem 1.25rem; }
+li { color: #9a9a90; line-height: 1.7; margin-bottom: 0.5rem; font-weight: 300; }
+strong { color: #f5f3ee; font-weight: 500; }
 a { color: #c8f25a; }
+hr { border: none; border-top: 1px solid #1a1a17; margin: 2rem 0; }
 footer { text-align: center; padding: 2rem; color: #3d3d38; font-size: 0.875rem; border-top: 1px solid #1a1a17; margin-top: 4rem; }
+footer a { color: #6b6b63; }
 </style>
 </head>
 <body>
 <nav>
   <a href="/" class="logo">kulova<span>.</span></a>
-  <a href="/dashboard" style="color:#f5f3ee;text-decoration:none;font-size:0.9rem;opacity:0.7;">Kirjaudu sisään</a>
+  <a href="/dashboard" style="color:#f5f3ee;text-decoration:none;font-size:0.9rem;opacity:0.7;">Log in</a>
 </nav>
 <div class="content">
-  <h1>Tietosuojaseloste</h1>
-  <p class="updated">Päivitetty 9.6.2026</p>
+  <h1>Privacy Policy</h1>
+  <p class="updated">Last updated: 25 July 2026</p>
 
-  <h2>1. Rekisterinpitäjä</h2>
-  <p>Kulova (<a href="https://kulova.com">kulova.com</a>)<br>Sähköposti: hello@kulova.com</p>
+  <p>This Privacy Policy explains how Kulova ("Kulova", "we", "us") collects, uses, stores, and protects data in connection with the Kulova app for Shopify ("the App") and the website kulova.com. Kulova is operated from Finland, and this policy is governed by Finnish law and the EU General Data Protection Regulation (GDPR).</p>
+  <p>Contact for any privacy question or request: <a href="mailto:hello@kulova.com">hello@kulova.com</a></p>
 
-  <h2>2. Mitä tietoja keräämme</h2>
-  <p>Keräämme seuraavia tietoja palvelun tarjoamiseksi:</p>
-  <p><strong style="color:#f5f3ee;">Yritysasiakkaista (tilaajat):</strong> sähköpostiosoite, yrityksen nimi, palvelukuvaukset ja aukioloajat, maksutiedot (käsittelee Stripe, emme tallenna korttitietoja).</p>
-  <p><strong style="color:#f5f3ee;">Loppukäyttäjistä (asiakkaiden asiakkaat):</strong> chat-viestien sisältö ja ajankohta. Emme kerää nimiä tai yhteystietoja ellei käyttäjä itse niitä viestissä kerro.</p>
+  <hr>
 
-  <h2>3. Miksi käsittelemme tietoja</h2>
-  <p>Käsittelemme tietoja palvelun tuottamiseksi (sopimuksen täyttäminen), laskutukseen ja asiakasviestintään (oikeutettu etu) sekä lakisääteisten velvollisuuksien täyttämiseksi.</p>
+  <h2>1. Who this policy is for</h2>
+  <p>The App is installed by Shopify merchants ("Merchants") and adds an AI-powered customer support chat to their storefronts. Two groups of people are relevant:</p>
+  <ul>
+    <li><strong>Merchants</strong> — the store owner who installs and configures the App.</li>
+    <li><strong>Store visitors / customers</strong> ("Customers") — people who use the chat widget on a Merchant's store.</li>
+  </ul>
+  <p>We act as a <strong>data processor</strong> on behalf of the Merchant for Customer data handled through the chat, and as a <strong>data controller</strong> for the Merchant's own account information.</p>
 
-  <h2>4. Tietojen säilytys</h2>
-  <p>Chat-viestit säilytetään 12 kuukautta, jonka jälkeen ne poistetaan automaattisesti. Tilaajan tiedot säilytetään tilauksen voimassaoloajan ja 12 kuukautta sen päättymisen jälkeen.</p>
+  <h2>2. What data we collect</h2>
+  <p><strong>From Merchants (when the App is installed and configured):</strong></p>
+  <ul>
+    <li>Store domain (myshopify.com address) and public store information (store name, contact email, description, currency) retrieved from the Shopify Admin API to configure the assistant.</li>
+    <li>Configuration you enter: business description, opening hours, support email, and custom bot instructions.</li>
+    <li>Billing status via Shopify's Billing API (we do not receive or store your payment card details — Shopify handles all payments).</li>
+  </ul>
+  <p><strong>From Customers (when they use the chat):</strong></p>
+  <ul>
+    <li>The messages they send to and receive from the assistant.</li>
+    <li>A randomly generated session identifier used to keep a single conversation continuous.</li>
+    <li>If the Customer asks about an order and provides them, an order number and email address, used solely to look up that order's status.</li>
+  </ul>
+  <p><strong>We do not collect:</strong> Shopify passwords, payment card numbers, or any special-category personal data. We do not use tracking cookies for advertising.</p>
 
-  <h2>5. Tietojen luovutus kolmansille osapuolille</h2>
-  <p>Käytämme seuraavia alihankkijoita palvelun tuottamiseen: Anthropic (tekoäly, USA), Supabase (tietokanta, EU), Vercel (hosting, USA), Stripe (maksut, USA), Brevo (sähköposti, EU). Kaikki alihankkijat noudattavat GDPR:ää. Emme myy tietoja kolmansille osapuolille.</p>
+  <h2>3. How we use data</h2>
+  <ul>
+    <li>To generate relevant AI responses to Customer questions using the Merchant's configured information.</li>
+    <li>To look up order status when a Customer requests it (order number + email are matched against the Merchant's Shopify orders; a response is only returned when both match).</li>
+    <li>To operate, maintain, and improve the App's core functionality.</li>
+    <li>To provide support to Merchants who contact us.</li>
+  </ul>
+  <p>We <strong>do not</strong> sell data, share it with advertisers, use it for profiling, or use Customer conversations to train third-party AI models beyond what is necessary to generate a single response.</p>
 
-  <h2>6. Tietojen siirto EU/ETA-alueen ulkopuolelle</h2>
-  <p>Osa alihankkijoistamme (Anthropic, Vercel, Stripe) sijaitsee USA:ssa. Tietojensiirto tapahtuu EU:n hyväksymiä mekanismeja käyttäen (Standard Contractual Clauses).</p>
+  <h2>4. AI processing</h2>
+  <p>Customer messages are sent to our AI provider (Anthropic) to generate responses. This processing happens in real time to answer the immediate question. Messages are transmitted securely and are not used by us to build advertising profiles.</p>
 
-  <h2>7. Rekisteröidyn oikeudet</h2>
-  <p>Sinulla on oikeus tarkastaa itseäsi koskevat tiedot, pyytää niiden oikaisemista tai poistamista, vastustaa käsittelyä sekä pyytää käsittelyn rajoittamista. Ota yhteyttä: hello@kulova.com</p>
+  <h2>5. Where data is stored</h2>
+  <p>Conversation data and Merchant configuration are stored in our database hosted on Supabase, with data residency in the <strong>European Union</strong>. Data is transmitted over encrypted connections (HTTPS/TLS).</p>
 
-  <h2>8. Evästeet</h2>
-  <p>Käytämme vain teknisesti välttämättömiä evästeitä (kielivalinta, istunto). Emme käytä seuranta- tai markkinointievästeitä.</p>
+  <h2>6. How long we keep data</h2>
+  <ul>
+    <li><strong>Conversation data:</strong> retained to provide the service and deleted on request or when a Merchant uninstalls the App (see Section 8).</li>
+    <li><strong>Merchant configuration:</strong> retained while the App is installed.</li>
+    <li><strong>Order lookups:</strong> the order number and email a Customer provides are used only for the immediate lookup and are stored only as part of the conversation record, subject to the same deletion rules.</li>
+  </ul>
 
-  <h2>9. Muutokset tietosuojaselosteeseen</h2>
-  <p>Ilmoitamme merkittävistä muutoksista sähköpostitse. Ajantasainen versio on aina tällä sivulla.</p>
+  <h2>7. Data sharing and sub-processors</h2>
+  <p>We share data only with the service providers necessary to run the App:</p>
+  <ul>
+    <li><strong>Shopify</strong> — platform, billing, and store/order data access.</li>
+    <li><strong>Anthropic</strong> — AI response generation.</li>
+    <li><strong>Supabase</strong> — database hosting (EU).</li>
+    <li><strong>Vercel</strong> — application hosting.</li>
+    <li><strong>Brevo</strong> — transactional email (e.g. login codes) where applicable.</li>
+  </ul>
+  <p>Each processes data only as needed to provide their service. We do not share data with any other third party.</p>
 
-  <h2>10. Yhteystiedot</h2>
-  <p>Tietosuojaan liittyvissä kysymyksissä: hello@kulova.com</p>
+  <h2>8. Your rights and data deletion (GDPR)</h2>
+  <p>Customers and Merchants in the EU have the right to access, correct, or delete their personal data, and to restrict or object to processing.</p>
+  <p><strong>Automatic deletion:</strong> The App implements Shopify's mandatory privacy webhooks:</p>
+  <ul>
+    <li><strong>customers/data_request</strong> — responds to a Customer's data access request relayed by the Merchant.</li>
+    <li><strong>customers/redact</strong> — deletes the relevant Customer's conversation data.</li>
+    <li><strong>shop/redact</strong> — deletes all of a Merchant's stored data after the App is uninstalled (triggered by Shopify 48 hours after uninstall).</li>
+  </ul>
+  <p><strong>Manual requests:</strong> You can also contact <a href="mailto:hello@kulova.com">hello@kulova.com</a> at any time to request access to or deletion of your data. We respond within the timeframes required by GDPR.</p>
+
+  <h2>9. Data security</h2>
+  <p>We protect data with encrypted connections, row-level access controls on our database so that each store's data is isolated, server-side authorization checks, and restricted access to production credentials. No method of transmission or storage is 100% secure, but we take reasonable and industry-standard measures to protect your data.</p>
+
+  <h2>10. Children</h2>
+  <p>The App is not directed at children and is not intended to collect data from anyone under 16.</p>
+
+  <h2>11. Changes to this policy</h2>
+  <p>We may update this policy from time to time. Material changes will be reflected by updating the "Last updated" date above. Continued use of the App after changes constitutes acceptance of the updated policy.</p>
+
+  <h2>12. Contact</h2>
+  <p>For any question, request, or concern about privacy or your data:</p>
+  <p><strong>Email:</strong> <a href="mailto:hello@kulova.com">hello@kulova.com</a><br>Kulova, Finland</p>
 </div>
-<footer>© 2026 Kulova. Tehty Suomessa.</footer>
+<footer>© 2026 Kulova. Made in Finland. · <a href="/support">Support</a></footer>
 </body>
 </html>
